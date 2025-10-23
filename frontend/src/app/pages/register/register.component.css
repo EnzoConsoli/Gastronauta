@@ -1,0 +1,174 @@
+/* src/app/pages/register/register.component.css */
+
+:host {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background-color: #12182B;
+  color: #FFFFFF;
+  font-family: 'Poppins', sans-serif;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  max-width: 340px;
+  width: 100%;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.logo-small {
+  width: 80px;
+  height: auto;
+}
+
+.title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.auth-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* >>>>> CORREÇÃO IMPORTANTE AQUI <<<<< */
+.form-group {
+  width: 100%;
+  margin-bottom: 20px;
+  position: relative; /* Esta linha é a "âncora" para o ícone do olho */
+}
+
+.form-control {
+  width: 100%;
+  padding: 14px 20px;
+  background-color: #FFFFFF;
+  color: #12182B;
+  border: none;
+  border-radius: 50px;
+  font-size: 1rem;
+  font-family: 'Poppins', sans-serif;
+  box-sizing: border-box;
+}
+
+.form-control::placeholder {
+  color: #a0aec0;
+}
+
+/* >>>>> E AQUI GARANTIMOS O POSICIONAMENTO <<<<< */
+.password-toggle-icon {
+  position: absolute; /* Posiciona o ícone em relação ao .form-group */
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%);
+  color: #7a8a9e;
+  cursor: pointer;
+  z-index: 2; /* Garante que o ícone fique na frente do input */
+}
+
+.btn-submit {
+  width: 100%;
+  padding: 14px 20px;
+  margin-top: 15px;
+  border-radius: 25px;
+  border: 2px solid #FFFFFF;
+  background-color: transparent;
+  color: #FFFFFF;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.btn-submit:hover {
+  background-color: #FFFFFF;
+  color: #12182B;
+}
+
+.back-link {
+  color: #a0aec0;
+  text-decoration: none;
+  margin-top: 25px;
+  font-size: 0.9rem;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+.error-message {
+  text-align: center; 
+  width: 100%; 
+  margin-bottom: 15px;
+  color: #ff7b7b;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+/* === ESTILOS PARA O MEDIDOR DE SENHA === */
+.password-strength-meter {
+  width: 100%;
+  margin: -10px 0 20px 0;
+  padding: 0 10px;
+  box-sizing: border-box;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.strength-bar-container {
+  width: 100%;
+  height: 8px;
+  background-color: #3e4c63;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+.strength-bar {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.3s ease-in-out, background-color 0.3s ease-in-out;
+}
+
+.requirements-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  text-align: left;
+  font-size: 0.8rem;
+}
+
+.requirements-list li {
+  margin-bottom: 5px;
+  transition: color 0.3s ease-in-out;
+  color: #ff7b7b;
+}
+
+.requirements-list li.valid {
+  color: #28a745;
+}
+
+.requirements-list li::before {
+  font-family: 'Font Awesome 5 Free', 'Font Awesome 6 Free';
+  font-weight: 900;
+  display: inline-block;
+  width: 20px;
+  content: '\f00d';
+}
+
+.requirements-list li.valid::before {
+  content: '\f00c';
+}

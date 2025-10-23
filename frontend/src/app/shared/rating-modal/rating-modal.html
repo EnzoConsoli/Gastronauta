@@ -1,0 +1,21 @@
+<div *ngIf="isVisible" class="popup-overlay" (click)="hide()">
+  <div class="popup-content" (click)="$event.stopPropagation()">
+    <button class="close-btn" (click)="hide()">X</button>
+    <h2 class="popup-title">A sua opinião é muito importante!</h2>
+    <p class="popup-subtitle">O que você achou desta receita?</p>
+
+    <div class="stars-container">
+      <i *ngFor="let i of [1, 2, 3, 4, 5]" 
+         class="fa-star"
+         [ngClass]="i <= (hoverRating || currentRating) ? 'fa-solid active' : 'fa-regular'"
+         (mouseenter)="hoverRating = i"
+         (mouseleave)="hoverRating = 0"
+         (click)="setRating(i)">
+      </i>
+    </div>
+
+    <textarea class="comment-box" [(ngModel)]="comentario" placeholder="Seu comentário ou faça uma pergunta..."></textarea>
+
+    <button class="btn-publicar" (click)="publish()" [disabled]="currentRating === 0">Publicar</button>
+  </div>
+</div>

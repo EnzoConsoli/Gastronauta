@@ -1,0 +1,42 @@
+<div class="container">
+  <div class="header">
+    <img src="./logo.jpg" alt="Logo Gastronauta" class="logo-small">
+    <h1 class="title">Login</h1>
+  </div>
+
+  <form class="auth-form" (ngSubmit)="onSubmit()" #loginForm="ngForm">
+    
+    <!-- Bloco para exibir a mensagem de erro (campos vazios ou credenciais inválidas) -->
+    <div *ngIf="errorMessage" class="error-message">
+      {{ errorMessage }}
+    </div>
+
+    <div class="form-group">
+      <input type="email"
+             class="form-control"
+             placeholder="Email"
+             name="email"
+             [(ngModel)]="credentials.email"
+             required
+             email>
+    </div>
+
+    <div class="form-group">
+      <input [type]="showPassword ? 'text' : 'password'"
+             class="form-control"
+             placeholder="Senha"
+             name="senha"
+             [(ngModel)]="credentials.senha"
+             required>
+      <i class="password-toggle-icon"
+         [class]="showPassword ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'"
+         (click)="togglePasswordVisibility()"></i>
+    </div>
+
+    <button type="submit" class="btn-submit">Logar</button>
+  </form>
+
+  <!-- Links com a classe .back-link para manter o estilo consistente -->
+  <a routerLink="/esqueci-senha" class="back-link">Esqueceu a senha?</a>
+  <a routerLink="/cadastro" class="back-link">Não tenho uma conta</a>
+</div>

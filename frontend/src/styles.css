@@ -1,0 +1,19 @@
+/* src/styles.css */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap');
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: 'Poppins', sans-serif;
+  background-color: #12182B; /* Fundo azul escuro global */
+  color: #FFFFFF;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+app-root {
+  display: block;
+  height: 100%;
+}

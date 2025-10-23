@@ -1,0 +1,7 @@
+<div *ngIf="isVisible" class="popup-overlay">
+  <div class="popup-content">
+    <h2 class="popup-title">{{ title }}</h2>
+    <p class="popup-message">{{ message }}</p>
+    <button class="popup-button" (click)="onConfirm()">OK</button>
+  </div>
+</div>

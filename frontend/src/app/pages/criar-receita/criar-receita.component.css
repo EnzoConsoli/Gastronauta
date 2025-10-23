@@ -1,0 +1,193 @@
+/* src/app/pages/criar-receita/criar-receita.component.css - VERSÃO FINAL TUDOGOSTOSO */
+
+:host {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  background-color: #12182B; /* Fundo azul escuro */
+  color: #FFFFFF;
+  min-height: 100vh;
+  font-family: 'Poppins', sans-serif;
+  padding: 40px 20px;
+}
+
+.form-container {
+  max-width: 800px;
+  margin: 0 auto;
+  background-color: #1a233a; /* Fundo um pouco mais claro */
+  padding: 30px 40px;
+  border-radius: 8px;
+}
+
+h1 {
+  color: #FFFFFF;
+  text-align: center;
+  margin-bottom: 30px;
+  font-weight: 700;
+}
+
+h2 {
+  color: #a0aec0;
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-bottom: 1px solid #3e4c63;
+  padding-bottom: 10px;
+  margin-top: 30px;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  margin-bottom: 25px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #a0aec0;
+}
+
+.form-control {
+  width: 100%;
+  padding: 12px 15px;
+  background-color: #2d3748;
+  border: 1px solid #3e4c63;
+  border-radius: 5px;
+  color: #FFFFFF;
+  font-size: 1rem;
+  font-family: 'Poppins', sans-serif;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: #FFFFFF;
+}
+
+textarea.form-control {
+  min-height: 100px;
+  resize: vertical;
+}
+
+.form-row {
+  display: flex;
+  gap: 20px;
+}
+.form-row .form-group {
+  flex: 1;
+}
+
+/* Estilos para Upload de Imagem */
+.image-upload-area {
+  border: 2px dashed #3e4c63;
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.2s, background-color 0.2s;
+  background-color: #2d3748;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 150px;
+}
+.image-upload-area:hover {
+  border-color: #FFFFFF;
+  background-color: #3e4c63;
+}
+.image-upload-area i {
+  font-size: 3rem;
+  color: #a0aec0;
+  margin-bottom: 10px;
+}
+.image-upload-area p {
+  color: #a0aec0;
+  margin: 0;
+  font-size: 0.9rem;
+}
+.hidden-file-input {
+  display: none;
+}
+.image-preview {
+  width: 100%;
+  height: 200px;
+  background-color: #2d3748;
+  border: 1px solid #3e4c63;
+  border-radius: 8px;
+  margin-top: 15px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.image-preview img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+.image-preview-placeholder {
+  color: #a0aec0;
+  font-style: italic;
+}
+
+/* Estilos para botões Radio (Dificuldade/Custo) */
+.rating-options {
+  display: flex;
+  gap: 10px;
+  margin-top: 5px;
+}
+.rating-options label {
+  background-color: #3e4c63;
+  padding: 8px 15px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: #a0aec0;
+  font-weight: normal;
+  font-size: 0.85rem;
+  border: 1px solid transparent;
+}
+.rating-options input[type="radio"] {
+  display: none;
+}
+.rating-options input[type="radio"]:checked + label {
+  background-color: #FFFFFF;
+  color: #12182B;
+  border-color: #FFFFFF;
+  font-weight: 600;
+}
+.rating-options label:hover {
+  background-color: #556a8d;
+  color: #FFFFFF;
+}
+
+/* Botão de submit */
+.btn-submit {
+  display: block;
+  width: 100%;
+  max-width: 300px;
+  margin: 40px auto 0 auto;
+  padding: 14px 20px;
+  border-radius: 25px;
+  border: 2px solid #FFFFFF;
+  background-color: #FFFFFF;
+  color: #12182B;
+  font-size: 1.1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+.btn-submit:hover {
+  background-color: transparent;
+  color: #FFFFFF;
+}
+
+.error-message {
+  color: #ff7b7b;
+  font-size: 0.8rem;
+  margin-top: 5px;
+}

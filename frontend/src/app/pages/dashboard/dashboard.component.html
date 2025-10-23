@@ -1,0 +1,33 @@
+<div class="profile-container">
+  <header class="profile-header">
+    <div class="avatar-container"><div class="profile-avatar"></div></div>
+    <div class="details-container">
+      <div class="details-top">
+        <h2 class="username">{{ username || 'Carregando...' }}</h2>
+        <button class="header-button">Editar Perfil</button>
+        <a routerLink="/criar-receita" class="header-button create-button">Criar Receita</a>
+        <button class="header-button logout" (click)="logout()">Sair</button>
+      </div>
+      <ul class="profile-stats">
+        <li><span>{{ myRecipesCount }}</span> posts</li>
+        <li><span>0</span> seguidores</li>
+        <li><span>0</span> seguindo</li>
+      </ul>
+      <div class="profile-bio">
+        <p class="full-name">{{ fullName }}</p>
+        <p>{{ bio }}</p>
+      </div>
+    </div>
+  </header>
+
+  <nav class="content-tabs">
+    <a routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+      <i class="fa-solid fa-table-cells"></i> Postagens
+    </a>
+    <a routerLink="/dashboard/curtidas" routerLinkActive="active">
+      <i class="fa-solid fa-heart"></i> Curtidas
+    </a>
+  </nav>
+
+  <router-outlet></router-outlet>
+</div>

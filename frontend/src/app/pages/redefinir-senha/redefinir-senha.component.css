@@ -1,0 +1,152 @@
+/* src/app/pages/redefinir-senha/redefinir-senha.component.css */
+
+:host {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background-color: #12182B;
+  color: #FFFFFF;
+  font-family: 'Poppins', sans-serif;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  max-width: 340px;
+  width: 100%;
+  text-align: center;
+}
+
+.title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 30px;
+}
+
+.auth-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.form-group {
+  width: 100%;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.form-control {
+  width: 100%;
+  padding: 14px 20px;
+  background-color: #FFFFFF;
+  color: #12182B;
+  border: none;
+  border-radius: 50px;
+  font-size: 1rem;
+  font-family: 'Poppins', sans-serif;
+  box-sizing: border-box;
+}
+
+.btn-submit {
+  width: 100%;
+  padding: 14px 20px;
+  margin-top: 15px;
+  border-radius: 25px;
+  border: 2px solid #FFFFFF;
+  background-color: transparent;
+  color: #FFFFFF;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.btn-submit:hover {
+  background-color: #FFFFFF;
+  color: #12182B;
+}
+
+/* Base para a mensagem de resposta (agora sem fundo ou padding) */
+.response-message {
+  margin-bottom: 15px;
+  width: 100%;
+  box-sizing: border-box;
+  font-weight: 500;
+}
+
+/* >>>>> CORREÇÃO AQUI <<<<< */
+.success-message {
+  color: #28a745; /* Apenas a cor do texto verde */
+}
+
+.error-message {
+  color: #dc3545; /* Apenas a cor do texto vermelho */
+}
+
+.field-error-message {
+  color: #ff7b7b;
+  font-size: 0.8rem;
+  text-align: left;
+  padding-left: 15px;
+  padding-top: 2px;
+  width: 100%;
+}
+
+/* === ESTILOS PARA O MEDIDOR DE SENHA === */
+.password-strength-meter {
+  width: 100%;
+  margin: -10px 0 20px 0;
+  padding: 0 10px;
+  box-sizing: border-box;
+}
+
+.strength-bar-container {
+  width: 100%;
+  height: 8px;
+  background-color: #3e4c63;
+  border-radius: 4px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+.strength-bar {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.3s ease-in-out, background-color 0.3s ease-in-out;
+}
+
+.requirements-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  text-align: left;
+  font-size: 0.8rem;
+}
+
+.requirements-list li {
+  margin-bottom: 5px;
+  transition: color 0.3s ease-in-out;
+  color: #ff7b7b;
+}
+
+.requirements-list li.valid {
+  color: #28a745;
+}
+
+.requirements-list li::before {
+  font-family: 'Font Awesome 5 Free', 'Font Awesome 6 Free';
+  font-weight: 900;
+  display: inline-block;
+  width: 20px;
+  content: '\f00d';
+}
+
+.requirements-list li.valid::before {
+  content: '\f00c';
+}

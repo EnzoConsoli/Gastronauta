@@ -1,0 +1,112 @@
+/* src/app/pages/esqueci-senha/esqueci-senha.component.css */
+
+:host {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background-color: #12182B;
+  color: #FFFFFF;
+  font-family: 'Poppins', sans-serif;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  max-width: 340px;
+  width: 100%;
+  text-align: center;
+}
+
+.title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 15px;
+}
+
+.tagline {
+  color: #a0aec0;
+  margin-bottom: 30px;
+}
+
+.auth-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.form-group {
+  width: 100%;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.form-control {
+  width: 100%;
+  padding: 14px 20px;
+  background-color: #FFFFFF;
+  color: #12182B;
+  border: none;
+  border-radius: 50px;
+  font-size: 1rem;
+  font-family: 'Poppins', sans-serif;
+  box-sizing: border-box;
+}
+
+.btn-submit {
+  width: 100%;
+  padding: 14px 20px;
+  margin-top: 15px;
+  border-radius: 25px;
+  border: 2px solid #FFFFFF;
+  background-color: transparent;
+  color: #FFFFFF;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.btn-submit:hover {
+  background-color: #FFFFFF;
+  color: #12182B;
+}
+
+.back-link {
+  color: #a0aec0;
+  text-decoration: none;
+  margin-top: 25px;
+  font-size: 0.9rem;
+}
+
+/* Base para a mensagem de resposta (agora sem fundo) */
+.response-message {
+  margin-bottom: 15px;
+  width: 100%;
+  box-sizing: border-box;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.success-message {
+  color: #28a745; /* Verde para sucesso */
+}
+
+.error-message {
+  color: #dc3545; /* Vermelho para erro */
+}
+
+/* Novo estilo para mensagens de validação de campo */
+.field-error-message {
+  color: #ff7b7b;
+  font-size: 0.8rem;
+  text-align: left;
+  padding-left: 15px;
+  padding-top: 2px;
+  width: 100%;
+}

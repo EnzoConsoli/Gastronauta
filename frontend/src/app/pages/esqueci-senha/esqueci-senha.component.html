@@ -1,0 +1,33 @@
+<div class="container">
+  <h1 class="title">Esqueceu a Senha?</h1>
+  <p class="tagline">
+    Digite seu email abaixo e enviaremos um link para você criar uma nova senha.
+  </p>
+
+  <form class="auth-form" (ngSubmit)="onSubmit(emailInput)" #forgotPasswordForm="ngForm">
+    <div class="form-group">
+      <input type="email"
+             class="form-control"
+             placeholder="Digite seu email"
+             name="email"
+             [(ngModel)]="email"
+             required
+             email
+             #emailInput="ngModel">
+      </div>
+
+    <div *ngIf="message" class="response-message" [ngClass]="isError ? 'error-message' : 'success-message'">
+      {{ message }}
+    </div>
+
+    <div *ngIf="showRegisterLink">
+      <a routerLink="/cadastro" class="back-link">Não tem uma conta? Cadastre-se aqui.</a>
+    </div>
+
+    <button type="submit" class="btn-submit" [disabled]="loading">
+      {{ loading ? 'Enviando...' : 'Enviar Link' }}
+    </button>
+  </form>
+
+  <a routerLink="/login" class="back-link">Voltar para o Login</a>
+</div>

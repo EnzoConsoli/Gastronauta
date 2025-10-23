@@ -1,0 +1,119 @@
+/* src/app/pages/recipe-detail/recipe-detail.component.css - VERSÃO ATUALIZADA */
+
+:host {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  background-color: #12182B;
+  color: #FFFFFF;
+  min-height: 100vh;
+  font-family: 'Poppins', sans-serif;
+  padding: 40px 20px;
+}
+
+.detail-container {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.recipe-image {
+  width: 100%;
+  height: auto;
+  max-height: 400px;
+  object-fit: cover;
+  display: block;
+  border-radius: 8px;
+  margin-bottom: 25px;
+  background-color: #3e4c63;
+}
+.title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+.recipe-title { font-size: 2.2rem; font-weight: 700; margin: 0; }
+.title-row .like-icon { font-size: 2rem; color: #a0aec0; cursor: pointer; transition: color 0.2s, transform 0.2s; }
+.title-row .like-icon:hover { color: #ff7b7b; }
+.title-row .like-icon.liked { color: #ed4956; font-weight: 900; }
+
+/* === REMOVIDO o .rating-row e .reviews-link antigos === */
+
+/* === NOVOS ESTILOS (Tudo Gostoso) ADAPTADOS AO TEMA ESCURO === */
+.rating-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  background-color: #1a233a; /* Fundo azul-escuro mais claro */
+  border-radius: 8px;
+  margin-bottom: 30px;
+}
+.rating-display {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.rating-stars {
+  color: #ffc107; /* Amarelo para estrelas */
+  font-size: 1.5rem;
+}
+.rating-stars .empty-star {
+  color: #3e4c63; /* Cinza-azulado para vazias */
+}
+.rating-info { color: #FFFFFF; } /* Texto branco */
+.rating-score { font-size: 1.5rem; font-weight: 700; }
+.rating-count { font-size: 0.9rem; color: #a0aec0; } /* Cinza claro */
+
+.btn-avaliar {
+  background-color: #ff6a28; /* Laranja do Tudo Gostoso */
+  color: white;
+  padding: 12px 20px;
+  border-radius: 25px;
+  border: none;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background-color 0.2s;
+}
+.btn-avaliar:hover {
+  background-color: #e05a1f;
+}
+.btn-avaliar i { font-size: 1.2rem; }
+
+/* === O RESTO DO SEU CSS CONTINUA ABAIXO === */
+.info-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
+  padding: 20px 0;
+  border-top: 1px solid #3e4c63;
+  border-bottom: 1px solid #3e4c63;
+  text-align: center;
+}
+.info-item { color: #a0aec0; }
+.info-label { display: block; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; margin-bottom: 8px; color: #FFFFFF; }
+.info-item span { font-weight: 500; font-size: 1rem; }
+
+.author-section { display: flex; align-items: center; gap: 15px; margin-bottom: 30px; padding: 20px 0; border-bottom: 1px solid #3e4c63; }
+.author-avatar { width: 45px; height: 45px; border-radius: 50%; background-color: #3e4c63; }
+.author-details { line-height: 1.3; }
+.author-label { font-size: 0.8rem; color: #a0aec0; }
+.author-username { font-weight: 600; color: #FFFFFF; font-size: 1rem; }
+
+.action-buttons { display: flex; gap: 15px; margin-bottom: 30px; padding-bottom: 30px; border-bottom: 1px solid #3e4c63; }
+.btn-action { padding: 8px 16px; border-radius: 25px; border: 2px solid #FFFFFF; background-color: transparent; color: #FFFFFF; font-size: 0.9rem; font-weight: 500; cursor: pointer; transition: all 0.2s ease-in-out; }
+.btn-action:hover { background-color: #FFFFFF; color: #12182B; }
+.btn-delete { border-color: #ff7b7b; color: #ff7b7b; }
+.btn-delete:hover { background-color: #ff7b7b; color: #12182B; }
+
+.section-title { font-size: 1.6rem; font-weight: 700; margin-bottom: 15px; margin-top: 30px; color: #FFFFFF; }
+.ingredients-list { list-style: none; padding-left: 0; color: #a0aec0; line-height: 1.8; margin-bottom: 30px; }
+.ingredients-list li::before { content: '•'; color: #FFFFFF; font-weight: bold; display: inline-block; width: 1em; margin-left: -1em; margin-right: 0.5em; }
+.preparation-steps { color: #a0aec0; line-height: 1.8; white-space: pre-wrap; }
+
+.loading, .error { padding: 40px; text-align: center; font-size: 1.2rem; color: #a0aec0; }

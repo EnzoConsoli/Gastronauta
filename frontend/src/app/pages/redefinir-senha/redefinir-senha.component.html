@@ -1,0 +1,54 @@
+<div class="container">
+  <h1 class="title">Crie uma Nova Senha</h1>
+  
+  <form class="auth-form" (ngSubmit)="onSubmit(resetPasswordForm)" #resetPasswordForm="ngForm">
+    <div class="form-group">
+      <input type="password" 
+             class="form-control" 
+             placeholder="Nova Senha" 
+             name="novaSenha" 
+             [(ngModel)]="novaSenha"
+             (ngModelChange)="onPasswordChange($event)"
+             (focus)="passwordFocused = true"
+             required
+             #novaSenhaInput="ngModel"> <div *ngIf="novaSenhaInput.invalid && (novaSenhaInput.dirty || novaSenhaInput.touched)" class="field-error-message">
+        <div *ngIf="novaSenhaInput.errors?.['required']">O campo Nova Senha é obrigatório.</div>
+      </div>
+    </div>
+
+    <div class="password-strength-meter" *ngIf="passwordFocused">
+      <div class="strength-bar-container">
+        <div class="strength-bar"
+             [style.width.%]="passwordStrengthPercent"
+             [style.backgroundColor]="passwordStrengthColor">
+        </div>
+      </div>
+      <ul class="requirements-list">
+        <li [class.valid]="passwordValidators.minLength">Mínimo 8 caracteres</li>
+        <li [class.valid]="passwordValidators.hasUppercase">1 letra maiúscula</li>
+        <li [class.valid]="passwordValidators.hasNumber">1 número</li>
+        <li [class.valid]="passwordValidators.hasSpecialChar">1 caractere especial (!@#...)</li>
+      </ul>
+    </div>
+
+    <div class="form-group">
+      <input type="password" 
+             class="form-control" 
+             placeholder="Confirmar Nova Senha" 
+             name="confirmarSenha" 
+             [(ngModel)]="confirmarSenha" 
+             required
+             #confirmarSenhaInput="ngModel"> <div *ngIf="confirmarSenhaInput.invalid && (confirmarSenhaInput.dirty || confirmarSenhaInput.touched)" class="field-error-message">
+        <div *ngIf="confirmarSenhaInput.errors?.['required']"></div>
+      </div>
+    </div>
+
+    <div *ngIf="message" class="response-message" [ngClass]="isError ? 'error-message' : 'success-message'">
+      {{ message }}
+    </div>
+
+    <button type="submit" class="btn-submit" [disabled]="loading">
+       {{ loading ? 'Salvando...' : 'Salvar Nova Senha' }}
+    </button>
+  </form>
+</div>

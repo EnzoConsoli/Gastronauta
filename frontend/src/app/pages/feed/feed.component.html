@@ -1,0 +1,28 @@
+<div class="feed-container">
+  <h1>Feed de Receitas</h1>
+
+  <div *ngIf="isLoading" class="loading">
+    Carregando receitas...
+  </div>
+
+  <div *ngIf="error" class="error">
+    {{ error }}
+  </div>
+
+  <div *ngIf="!isLoading && !error" class="recipe-grid">
+
+    <a *ngFor="let recipe of recipes" [routerLink]="['/receita', recipe.id]" class="recipe-card-link">
+      <div class="recipe-card">
+        <img [src]="recipe.url_imagem || 'assets/placeholder.png'"
+             alt="Foto de {{ recipe.prato }}"
+             class="recipe-image"
+             (error)="onImageError($event)">
+        <div class="recipe-content">
+          <h2 class="recipe-title">{{ recipe.prato }}</h2>
+          <p class="recipe-author">Por: {{ recipe.nome_usuario }}</p>
+        </div> </div> </a> </div> <div *ngIf="!isLoading && !error && recipes.length === 0" class="no-posts">
+    <p>Nenhuma receita encontrada no feed ainda.</p>
+  </div>
+
+</div> ```
+

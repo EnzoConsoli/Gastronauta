@@ -1,0 +1,97 @@
+/* Importa a fonte 'Poppins' do Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap');
+
+/*
+  A pseudo-classe :host se refere ao elemento raiz do próprio componente.
+  Usamos ela para definir o fundo e centralizar o conteúdo,
+  criando o layout principal da página.
+*/
+:host {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%; /* Garante que o componente ocupe toda a altura da tela */
+  background-color: #12182B; /* Azul bem escuro, quase preto */
+  color: #FFFFFF;
+  font-family: 'Poppins', sans-serif;
+  text-align: center;
+}
+
+/* O container principal que segura os elementos */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  max-width: 320px;
+  width: 100%;
+}
+
+/* Estilo da Logo */
+.logo {
+  width: 200px;
+  height: auto;
+  margin-bottom: 20px;
+}
+
+/* Estilo do Título "GASTRONAUTA" */
+.title {
+  color: #FFFFFF; /* Cor explícita para o título */
+  font-size: 2.2rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+/* Estilo do Tagline (texto secundário) */
+.tagline {
+  color: #a0aec0; /* Cinza claro para o tagline */
+  margin-top: 15px;
+  margin-bottom: 40px;
+  font-size: 1rem;
+  font-weight: 400;
+  max-width: 250px;
+  line-height: 1.5;
+}
+
+/* Estilo base para os botões */
+.btn {
+  display: block;
+  width: 100%;
+  padding: 14px 20px;
+  margin-top: 15px;
+  border-radius: 25px; /* Bordas bem arredondadas */
+  border: 2px solid #FFFFFF;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s ease-in-out;
+  box-sizing: border-box;
+}
+
+/* Estilo específico do botão "Entrar" (fundo branco) */
+.btn-primary {
+  background-color: #FFFFFF;
+  color: #12182B;
+}
+
+/* Efeito ao passar o mouse por cima do botão "Entrar" */
+.btn-primary:hover {
+  background-color: transparent;
+  color: #FFFFFF;
+}
+
+/* Estilo específico do botão "Criar conta" (fundo transparente) */
+.btn-secondary {
+  background-color: transparent;
+  color: #FFFFFF;
+}
+
+/* Efeito ao passar o mouse por cima do botão "Criar conta" */
+.btn-secondary:hover {
+  background-color: #FFFFFF;
+  color: #12182B;
+}
