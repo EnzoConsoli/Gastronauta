@@ -1,6 +1,6 @@
-import { Component, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { Location } from '@angular/common'; // Importe Location
+import { Component, ViewChild, ElementRef, AfterViewInit, OnInit } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
 import { RecipeService } from '../../services/recipe.service';
 import { PopupComponent } from '../../shared/popup/popup.component';
 import { FormsModule, NgForm } from '@angular/forms';
@@ -13,9 +13,12 @@ import { CommonModule } from '@angular/common';
   templateUrl: './criar-receita.component.html',
   styleUrls: ['./criar-receita.component.css']
 })
-export class CriarReceitaComponent implements AfterViewInit {
+export class CriarReceitaComponent implements AfterViewInit, OnInit {
   @ViewChild('recipePopup') popup!: PopupComponent;
   @ViewChild('fileInput') fileInputRef!: ElementRef<HTMLInputElement>;
+
+  // 🔥 ADICIONADO: origem da navegação
+  origem: string | null = null;
 
   recipeData = {
     prato: '',
@@ -28,33 +31,52 @@ export class CriarReceitaComponent implements AfterViewInit {
     preparacao: '',
     cozimento: '',
   };
+
   selectedFile: File | null = null;
   imagePreview: string | ArrayBuffer | null = null;
   uploadError: string | null = null;
   isLoading = false;
 
+  triedSubmit = false;
+
   constructor(
     private recipeService: RecipeService,
     private router: Router,
-    private location: Location
-  ) { }
+    private location: Location,
+    private route: ActivatedRoute   // ← ADICIONADO
+  ) {}
 
-  ngAfterViewInit(): void {
-    if (!this.popup) {
-      console.error('ERRO CRÍTICO: PopupComponent não foi encontrado. Verifique #recipePopup no HTML.');
-    }
+  ngOnInit(): void {
+    this.route.queryParams.subscribe(params => {
+      this.origem = params['from'] || null;   // ← ADICIONADO
+    });
   }
+
+  ngAfterViewInit(): void {}
 
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files[0]) {
       const file = input.files[0];
-      const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
-      if (!allowedTypes.includes(file.type)) { this.uploadError = 'Tipo inválido.'; this.resetFileInput(); return; }
-      if (file.size > 5 * 1024 * 1024) { this.uploadError = 'Máx 5MB.'; this.resetFileInput(); return; }
-      this.selectedFile = file; this.uploadError = null;
+      const allowed = ['image/jpeg', 'image/png', 'image/webp'];
+
+      if (!allowed.includes(file.type)) {
+        this.uploadError = 'Formato inválido. Envie JPG, PNG ou WEBP.';
+        this.resetFileInput();
+        return;
+      }
+
+      if (file.size > 5 * 1024 * 1024) {
+        this.uploadError = 'A imagem deve ter no máximo 5MB.';
+        this.resetFileInput();
+        return;
+      }
+
+      this.selectedFile = file;
+      this.uploadError = null;
+
       const reader = new FileReader();
-      reader.onload = () => { this.imagePreview = reader.result; };
+      reader.onload = () => (this.imagePreview = reader.result);
       reader.readAsDataURL(file);
     } else {
       this.resetFileInput();
@@ -62,58 +84,66 @@ export class CriarReceitaComponent implements AfterViewInit {
   }
 
   resetFileInput(): void {
-    this.selectedFile = null; this.imagePreview = null;
-    if (this.fileInputRef) { this.fileInputRef.nativeElement.value = ''; }
+    this.selectedFile = null;
+    this.imagePreview = null;
+    if (this.fileInputRef) {
+      this.fileInputRef.nativeElement.value = '';
+    }
   }
 
   onSubmit(form: NgForm): void {
-    if (form.invalid) {
-      // Usa o popup para erros de validação
-      if(this.popup) this.popup.show('Erro!', 'Preencha todos os campos obrigatórios (*).');
-      else alert('Preencha todos os campos obrigatórios (*).');
+    this.triedSubmit = true;
+
+    const requiredFilled =
+      !!this.recipeData.prato &&
+      !!this.recipeData.ingredientes &&
+      !!this.recipeData.preparacao &&
+      !!this.selectedFile;
+
+    if (!requiredFilled) {
+      this.popup.show(
+        'Atenção!',
+        'Antes de publicar, verifique se você preencheu todos os campos obrigatórios e adicionou uma foto da receita. 😊'
+      );
       return;
     }
-    
+
     this.isLoading = true;
+
     const formData = new FormData();
-    Object.keys(this.recipeData).forEach(key => {
+    for (const key of Object.keys(this.recipeData)) {
       formData.append(key, (this.recipeData as any)[key] || '');
-    });
-    if (this.selectedFile) {
-      formData.append('imagemReceita', this.selectedFile, this.selectedFile.name);
     }
+    formData.append('imagemReceita', this.selectedFile!, this.selectedFile!.name);
 
     this.recipeService.criar(formData).subscribe({
-      next: (res) => {
+      next: () => {
         this.isLoading = false;
-        if(this.popup) this.popup.show('Sucesso!', 'Sua receita foi publicada!');
-        else alert('Sua receita foi publicada!');
-        this.resetForm(form);
+
+        this.popup.show('Receita publicada!', 'Sua receita foi enviada com sucesso! 🎉');
+
+        form.resetForm({ dificuldade: 'Fácil', custo: 'Médio' });
+        this.resetFileInput();
+        this.triedSubmit = false;
       },
       error: (err) => {
         this.isLoading = false;
-        console.error('Erro ao criar receita (verifique o terminal do backend!):', err);
-        const errorMsg = err.error?.mensagem || 'Não foi possível publicar sua receita.';
-        if(this.popup) this.popup.show('Erro!', errorMsg);
-        else alert(`Erro: ${errorMsg}`);
+        const msg = err.error?.mensagem || 'Erro ao enviar receita.';
+        this.popup.show('Erro!', msg);
       }
     });
   }
 
+  // 🔥 COMPLETAMENTE SUBSTITUÍDO
   onPopupConfirm(): void {
-    if (this.popup?.title.includes('Sucesso')) {
+    if (this.origem === 'perfil') {
+      this.router.navigate(['/dashboard']);
+    } else {
       this.router.navigate(['/dashboard']);
     }
   }
 
-  resetForm(form: NgForm): void {
-    form.resetForm({ dificuldade: 'Fácil', custo: 'Médio' });
-    this.recipeData = {
-      prato: '', descricao: '', dificuldade: 'Fácil', custo: 'Médio',
-      tempo_preparo: '', rendimento: '', ingredientes: '', preparacao: '', cozimento: ''
-    };
-    this.resetFileInput();
+  voltar(): void {
+    this.location.back();
   }
-
-  voltar(): void { this.location.back(); }
 }

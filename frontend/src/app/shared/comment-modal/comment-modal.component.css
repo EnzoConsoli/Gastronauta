@@ -1,0 +1,104 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.75);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.modal-body {
+  background: #111827;
+  border-radius: 10px;
+  display: flex;
+  width: 90vw;
+  max-width: 950px;
+  height: 80vh;
+  overflow: hidden;
+}
+
+.image-section {
+  width: 55%;
+  background: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.image-section img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.comments-section {
+  width: 45%;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px;
+  border-bottom: 1px solid #2a3548;
+}
+
+.user-info {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.avatar, .avatar-sm {
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.avatar {
+  width: 35px;
+  height: 35px;
+}
+
+.avatar-sm {
+  width: 32px;
+  height: 32px;
+}
+
+.comments-list {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 12px;
+}
+
+.comment-item {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.bold {
+  font-weight: 600;
+}
+
+.write-box {
+  display: flex;
+  padding: 10px;
+  border-top: 1px solid #2a3548;
+}
+
+.write-box input {
+  flex-grow: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: white;
+}
+
+.write-box button {
+  background: none;
+  border: none;
+  color: #3b82f6;
+  font-weight: 600;
+}

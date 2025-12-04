@@ -1,0 +1,166 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  background-color: #12182B; /* Fundo escuro do seu site */
+  color: #FFFFFF;
+  font-family: 'Poppins', sans-serif;
+  padding: 40px 20px;
+}
+
+.form-container {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.form-card {
+  background-color: #1a233a; /* Cor de card do seu site */
+  padding: 30px;
+  border-radius: 12px;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+/* Preview da Imagem */
+.image-preview-container {
+  width: 100%;
+  max-height: 300px;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 20px;
+  background-color: #3e4c63;
+}
+.image-preview {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Estilos do Formulário */
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #a0aec0; /* Cinza claro */
+}
+
+/* Inputs e Textareas */
+input[type="text"],
+textarea,
+select {
+  width: 100%;
+  padding: 12px;
+  background-color: #3e4c63; /* Fundo do input */
+  border: 1px solid #5a6b8a;
+  border-radius: 8px;
+  color: #FFFFFF;
+  font-size: 1rem;
+  box-sizing: border-box; /* Garante padding correto */
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #a0aec0;
+  opacity: 0.7;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+/* Linhas de Detalhes (para grid) */
+.details-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+/* Adaptação para 3 colunas */
+.details-row:last-of-type {
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+}
+
+/* Input de Arquivo */
+.file-label {
+  display: inline-block;
+  padding: 10px 15px;
+  background-color: #5a6b8a;
+  color: #FFFFFF;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+.file-label:hover {
+  background-color: #6a7b9a;
+}
+input[type="file"] {
+  display: none; /* Esconde o input feio */
+}
+
+
+/* Botões */
+.button-group {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  margin-top: 30px;
+  border-top: 1px solid #3e4c63;
+  padding-top: 20px;
+}
+
+.btn {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 25px; /* Botão arredondado */
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-primary {
+  background-color: #FFFFFF;
+  color: #12182B;
+}
+.btn-primary:hover {
+  background-color: #e0e0e0;
+}
+.btn-primary:disabled {
+  background-color: #5a6b8a;
+  cursor: not-allowed;
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: #a0aec0;
+  border: 1px solid #5a6b8a;
+}
+.btn-secondary:hover {
+  background-color: #3e4c63;
+  color: #FFFFFF;
+}
+
+.loading, .error {
+  text-align: center;
+  padding: 20px;
+  font-size: 1.1rem;
+}
+.error {
+  color: #ff7b7b;
+}
+.text-counter {
+  display: block;
+  text-align: right;
+  font-size: 0.75rem;
+  color: #a0aec0;
+  margin-top: 4px;
+}
+

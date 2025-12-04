@@ -1,0 +1,50 @@
+<div class="post-header">
+
+  <!-- LINK DINÂMICO PARA PERFIL -->
+  <a 
+    [routerLink]="['/dashboard']"
+    [queryParams]="isOwner ? null : { user: post.usuario_id }">
+    <img [src]="authorAvatarUrl" class="author-avatar" (error)="onAvatarError($event)" />
+  </a>
+
+  <a 
+    class="author-username"
+    [routerLink]="['/dashboard']"
+    [queryParams]="isOwner ? null : { user: post.usuario_id }">
+      @{{ post.nome_usuario }}
+  </a>
+
+</div>
+
+<a [routerLink]="['/receita', post.id]">
+  <img 
+    [src]="postImageUrl" 
+    class="post-image" 
+    (error)="onPostImageError($event)"
+  />
+</a>
+
+<div class="info-row">
+  <div class="recipe-name">{{ post.prato }}</div>
+
+  <div class="engagement">
+
+    <div class="like-section" (click)="toggleLike()">
+      <i
+        class="fa-heart-icon"
+        [ngClass]="isLiked ? 'fa-solid fa-heart liked' : 'fa-regular fa-heart'"></i>
+      <span class="likes-count">{{ totalLikes }}</span>
+    </div>
+
+    <div class="rating-row">
+      <i class="fa-solid fa-star star-icon"></i>
+      <span>{{ avgAval }} / 5 ({{ totalAval }})</span>
+    </div>
+
+  </div>
+</div>
+
+<div class="post-description">
+  <span class="author-username-desc">@{{ post.nome_usuario }}</span>
+  {{ post.descricao || '' }}
+</div>

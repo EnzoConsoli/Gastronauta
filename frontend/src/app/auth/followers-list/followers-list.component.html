@@ -1,0 +1,26 @@
+<div class="back-button" (click)="goBack()">
+  <i class="fa-solid fa-arrow-left"></i> Voltar
+</div>
+
+<div class="container">
+  <h2>{{ title }}</h2>
+
+  <div *ngFor="let u of users" class="user-item" (click)="openProfile(u.id)">
+
+    <img [src]="u.foto_perfil_url" class="avatar" />
+
+    <div class="info">
+      <h3>{{ u.nome_usuario }}</h3>
+    </div>
+
+    <button
+      class="follow-btn"
+      [ngClass]="{ 'following': u.isFollowing }"
+      (click)="toggleFollow(u, $event)">
+      {{ getButtonText(u) }}
+    </button>
+
+  </div>
+
+  <p *ngIf="users.length === 0" class="empty">Nada por aqui ainda</p>
+</div>

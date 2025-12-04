@@ -9,7 +9,7 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.css']  
 })
 export class LoginComponent {
   credentials = {
@@ -36,12 +36,25 @@ export class LoginComponent {
 
     this.authService.login(this.credentials).subscribe({
       next: (response) => {
+
         console.log('Login bem-sucedido, token recebido:', response.token);
-        localStorage.setItem('token', response.token); // Salva o token para manter o usuário logado
-        this.router.navigate(['/dashboard']); // Redireciona para a página protegida
+        
+        // 🔥 Salva o token
+        localStorage.setItem('token', response.token);
+
+        // 🔥 Salva o ID do usuário (correção DEFINITIVA)
+        localStorage.setItem('user_id', String(response.id));
+
+        // 🔥 Salva também o nome de usuário (opcional mas recomendado)
+        if (response.nome_usuario) {
+          localStorage.setItem('username', response.nome_usuario);
+        }
+
+        // Navega para o feed
+        this.router.navigate(['/feed']);
       },
+
       error: (err) => {
-        // Mostra a mensagem de erro vinda do backend ou uma mensagem padrão
         this.errorMessage = err.error?.mensagem || 'Credenciais inválidas. Tente novamente.';
       }
     });

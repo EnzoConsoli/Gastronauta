@@ -1,0 +1,135 @@
+/* === FUNDO ESCURO DO MODAL === */
+.overlay {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.65);
+  z-index: 99999;
+}
+
+/* === CAIXA DO POPUP CENTRALIZADA NA TELA === */
+.popup {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  background: #0e1525;
+  width: 380px;
+  padding: 32px 36px;
+  border-radius: 18px;
+  text-align: center;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+  border: 1px solid #1f2940;
+}
+
+.close-btn {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  font-size: 22px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #d9e0f2;
+}
+
+.close-btn:hover {
+  color: white;
+}
+
+.logo {
+  font-size: 26px;
+  font-weight: 600;
+  color: white;
+  margin-bottom: 25px;
+}
+
+.input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 12px;
+  border-radius: 10px;
+  border: 1px solid #2c3650;
+  background: #12182b;
+  color: white;
+  font-size: 15px;
+}
+
+.login-btn {
+  width: 100%;
+  background: #4169e1;
+  color: white;
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.login-btn:hover {
+  background: #3558c7;
+}
+
+.forgot {
+  display: block;
+  margin-top: 14px;
+  font-size: 14px;
+  color: #d9e0f2;
+  cursor: pointer;
+}
+
+.forgot:hover {
+  color: white;
+  text-decoration: underline;
+}
+
+.erro-msg {
+  color: #ff6b6b;
+  font-size: 14px;
+  margin-top: -5px;
+  margin-bottom: 10px;
+}
+
+.info {
+  color: #d9e0f2;
+  margin-bottom: 12px;
+}
+/* WRAPPER CORRETO PARA CENTRALIZAR TUDO */
+/* WRAPPER para posicionamento */
+/* WRAPPER da senha */
+/* WRAPPER da senha */
+/* WRAPPER DA SENHA */
+/* WRAPPER DA SENHA */
+.senha-wrapper {
+  position: relative;
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+/* INPUT COM ALTURA FIXA E PERFEITA */
+.senha-input {
+  height: 44px !important;          /* altura igual ao email */
+  line-height: 44px !important;     /* centralização vertical perfeita */
+  padding: 0 48px 0 12px !important; /* espaço pro olho + padding lateral */
+  display: flex;
+  align-items: center;
+}
+
+/* ÍCONE CENTRALIZADO PERFEITO NO MEIO DO INPUT */
+.senha-wrapper i {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%); 
+  font-size: 18px;
+  color: #a0aec0;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.senha-wrapper i:hover {
+  color: #ffffff;
+}

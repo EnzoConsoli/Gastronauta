@@ -12,6 +12,7 @@
              name="nome_usuario"
              [(ngModel)]="userData.nome_usuario"
              required
+            maxlength="20"
              #nomeUsuarioInput="ngModel">
     </div>
 
@@ -23,6 +24,7 @@
              [(ngModel)]="userData.email"
              required
              email
+              maxlength="254"
              #emailInput="ngModel">
     </div>
 

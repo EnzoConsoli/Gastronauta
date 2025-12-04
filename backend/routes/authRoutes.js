@@ -14,16 +14,21 @@ const router = express.Router();
 // =======================================================
 router.post('/register', async (req, res) => {
   const { nome_usuario, email, senha } = req.body;
+
   if (!nome_usuario || !email || !senha) {
     return res.status(400).json({ mensagem: 'Por favor, preencha todos os campos.' });
   }
+
   try {
     const hashedPassword = await bcrypt.hash(senha, 10);
+
     const [result] = await db.query(
       'INSERT INTO usuarios (nome_usuario, email, senha_hash) VALUES (?, ?, ?)',
       [nome_usuario, email, hashedPassword]
     );
+
     res.status(201).json({ mensagem: 'Usuário criado com sucesso!', usuarioId: result.insertId });
+
   } catch (error) {
     if (error.code === 'ER_DUP_ENTRY') {
       return res.status(409).json({ mensagem: 'Email ou nome de usuário já existe.' });
@@ -33,34 +38,44 @@ router.post('/register', async (req, res) => {
 });
 
 // =======================================================
-// === ROTA DE LOGIN (POST /api/auth/login) ===
+// === LOGIN ===
 // =======================================================
 router.post('/login', async (req, res) => {
   const { email, senha } = req.body;
+
   if (!email || !senha) {
     return res.status(400).json({ mensagem: 'Por favor, preencha todos os campos.' });
   }
+
   try {
     const [rows] = await db.query('SELECT * FROM usuarios WHERE email = ?', [email]);
     const user = rows[0];
+
     if (!user || !(await bcrypt.compare(senha, user.senha_hash))) {
       return res.status(401).json({ mensagem: 'Credenciais inválidas.' });
     }
+
     const payload = { id: user.id, nome_usuario: user.nome_usuario };
     const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '8h' });
-    res.json({ mensagem: 'Login bem-sucedido!', token });
+
+    res.json({
+      mensagem: 'Login bem-sucedido!',
+      token,
+      id: user.id,
+      nome_usuario: user.nome_usuario
+    });
+
   } catch (error) {
     res.status(500).json({ mensagem: 'Erro no servidor.', erro: error.message });
   }
 });
 
 // =======================================================
-// === ROTAS PARA REDEFINIÇÃO DE SENHA ===
+// === SOLICITAR CÓDIGO — /forgot-password ===
 // =======================================================
-
-// ROTA PARA SOLICITAR A REDEFINIÇÃO DE SENHA (1ª parte do fluxo)
 router.post('/forgot-password', async (req, res) => {
   const { email } = req.body;
+
   try {
     const [rows] = await db.query('SELECT * FROM usuarios WHERE email = ?', [email]);
     const user = rows[0];
@@ -69,14 +84,19 @@ router.post('/forgot-password', async (req, res) => {
       return res.status(404).json({ mensagem: 'Nenhuma conta encontrada com este email.' });
     }
 
-    const resetToken = crypto.randomBytes(32).toString('hex');
-    const hashedToken = crypto.createHash('sha256').update(resetToken).digest('hex');
-    const tokenExpiration = new Date(Date.now() + 3600000); // 1 hora
+    // código de 6 dígitos
+    const resetCode = Math.floor(100000 + Math.random() * 900000).toString();
 
-    await db.query(
-      'UPDATE usuarios SET reset_token = ?, reset_token_expira = ? WHERE id = ?',
-      [hashedToken, tokenExpiration, user.id]
-    );
+    // hash do código para salvar no banco
+    const hashedCode = crypto.createHash('sha256').update(resetCode).digest('hex');
+
+    const expires = new Date(Date.now() + 10 * 60 * 1000); // 10 minutos
+
+    await db.query(`
+      UPDATE usuarios
+      SET reset_token = ?, reset_token_expira = ?
+      WHERE id = ?
+    `, [hashedCode, expires, user.id]);
 
     const transporter = nodemailer.createTransport({
       service: 'gmail',
@@ -86,95 +106,116 @@ router.post('/forgot-password', async (req, res) => {
       }
     });
 
-    const resetLink = `http://localhost:4200/reset-password?token=${resetToken}`;
-
-    // >>>>> NOVO TEMPLATE DE EMAIL ESTILIZADO <<<<<
     const emailHtml = `
-      <body style="margin: 0; padding: 0; font-family: Poppins, sans-serif; background-color: #f4f4f4;">
-        <table align="center" border="0" cellpadding="0" cellspacing="0" width="600" style="border-collapse: collapse; margin-top: 30px; box-shadow: 0 0 20px rgba(0,0,0,0.1);">
-          <tr>
-            <td align="center" bgcolor="#12182B" style="padding: 40px 0 30px 0;">
-              <img src="URL_PUBLICA_DA_SUA_LOGO.PNG" alt="Gastronauta Logo" width="90" style="display: block;" />
-              <h1 style="color: #ffffff; font-size: 24px; margin-top: 20px;">GASTRONAUTA</h1>
-            </td>
-          </tr>
-          <tr>
-            <td bgcolor="#ffffff" style="padding: 40px 30px 40px 30px;">
-              <table border="0" cellpadding="0" cellspacing="0" width="100%">
-                <tr>
-                  <td style="color: #333333; font-size: 20px; font-weight: bold;">
-                    Redefinição de Senha
-                  </td>
-                </tr>
-                <tr>
-                  <td style="padding: 20px 0 30px 0; color: #555555; font-size: 16px; line-height: 1.5;">
-                    Olá ${user.nome_usuario},<br><br>
-                    Recebemos uma solicitação para redefinir sua senha. Para criar uma nova, clique no botão abaixo. Este link é válido por 1 hora.
-                  </td>
-                </tr>
-                <tr>
-                  <td align="center">
-                    <a href="${resetLink}" style="display: inline-block; padding: 12px 35px; background-color: #12182B; color: #ffffff; text-decoration: none; border-radius: 25px; font-weight: 500;">
-                      Redefinir Senha
-                    </a>
-                  </td>
-                </tr>
-                <tr>
-                  <td style="padding: 30px 0 0 0; color: #888888; font-size: 14px;">
-                    Se você não solicitou esta alteração, pode ignorar este email.
-                  </td>
-                </tr>
-              </table>
-            </td>
-          </tr>
-          <tr>
-            <td bgcolor="#12182B" style="padding: 20px 30px; text-align: center; color: #a0aec0; font-size: 12px;">
-              &copy; ${new Date().getFullYear()} Gastronauta. Todos os direitos reservados.
-            </td>
-          </tr>
-        </table>
-      </body>
-    `;
+  <body style="font-family:Poppins,sans-serif;">
+    <div style="max-width:600px;margin:auto;padding:20px;background:#fff;border-radius:12px;">
+      <h2 style="text-align:center;color:#12182B;">Seu Código de Redefinição</h2>
+
+      <p style="font-size:16px;color:#444;">
+        Olá <strong>${user.nome_usuario}</strong>,<br><br>
+        Você solicitou a redefinição da sua senha no Gastronauta.
+        Use o código abaixo para continuar o processo.
+      </p>
+
+      <div style="text-align:center;margin:30px 0;">
+        <span style="
+          font-size:38px;
+          font-weight:bold;
+          letter-spacing:10px;
+          color:#12182B;">
+          ${resetCode}
+        </span>
+      </div>
+
+      <p style="font-size:14px;color:#444;">
+        ⏱ O código expira em <strong>10 minutos</strong>.<br>
+        ❗ Não compartilhe este código com ninguém.
+      </p>
+    </div>
+  </body>
+`;
 
     await transporter.sendMail({
       to: user.email,
       from: 'Gastronauta <colasmoreira@gmail.com>',
-      subject: 'Redefinição de Senha - Gastronauta',
-      html: emailHtml // Usando o novo template estilizado
+      subject: 'Seu Código de Redefinição - Gastronauta',
+      html: emailHtml
     });
 
-    res.json({ mensagem: 'Um link de redefinição foi enviado para o seu email.' });
+    res.json({ mensagem: 'Um código foi enviado para seu email.' });
+
   } catch (error) {
-    console.error('Erro em forgot-password:', error);
-    res.status(500).json({ mensagem: 'Ocorreu um erro no servidor.' });
+    console.error(error);
+    res.status(500).json({ mensagem: 'Erro interno.' });
   }
 });
 
-// ROTA PARA EFETIVAMENTE REDEFINIR A SENHA (2ª parte do fluxo)
-router.post('/reset-password', async (req, res) => {
-  const { token, novaSenha } = req.body;
-  if (!token || !novaSenha) {
-    return res.status(400).json({ mensagem: 'Token e nova senha são obrigatórios.' });
+// =======================================================
+// === VERIFICAR CÓDIGO — /verify-reset-code ===
+// =======================================================
+router.post('/verify-reset-code', async (req, res) => {
+  const { email, code } = req.body;
+
+  if (!email || !code) {
+    return res.status(400).json({ mensagem: 'Email e código são obrigatórios.' });
   }
+
   try {
-    const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
-    const [rows] = await db.query(
-      'SELECT * FROM usuarios WHERE reset_token = ? AND reset_token_expira > NOW()',
-      [hashedToken]
-    );
-    const user = rows[0];
-    if (!user) {
-      return res.status(400).json({ mensagem: 'Token inválido ou expirado.' });
+    const hashed = crypto.createHash('sha256').update(code).digest('hex');
+
+    const [rows] = await db.query(`
+      SELECT * FROM usuarios
+      WHERE email = ? AND reset_token = ? AND reset_token_expira > NOW()
+    `, [email, hashed]);
+
+    if (!rows[0]) {
+      return res.status(400).json({ mensagem: 'Código inválido ou expirado.' });
     }
-    const newHashedPassword = await bcrypt.hash(novaSenha, 10);
-    await db.query(
-      'UPDATE usuarios SET senha_hash = ?, reset_token = NULL, reset_token_expira = NULL WHERE id = ?',
-      [newHashedPassword, user.id]
-    );
-    res.json({ mensagem: 'Senha redefinida com sucesso!' });
+
+    res.json({ mensagem: 'Código válido!' });
+
   } catch (error) {
-    console.error('Erro em reset-password:', error);
-    res.status(500).json({ mensagem: 'Ocorreu um erro no servidor.' });
+    res.status(500).json({ mensagem: 'Erro interno.' });
+  }
+});
+
+// =======================================================
+// === DEFINIR A NOVA SENHA — /reset-password ===
+// =======================================================
+router.post('/reset-password', async (req, res) => {
+  const { email, code, novaSenha } = req.body;
+
+  if (!email || !code || !novaSenha) {
+    return res.status(400).json({ mensagem: 'Email, código e nova senha são obrigatórios.' });
+  }
+
+  try {
+    const hashed = crypto.createHash('sha256').update(code).digest('hex');
+
+    const [rows] = await db.query(`
+      SELECT * FROM usuarios
+      WHERE email = ? AND reset_token = ? AND reset_token_expira > NOW()
+    `, [email, hashed]);
+
+    const user = rows[0];
+
+    if (!user) {
+      return res.status(400).json({ mensagem: 'Código inválido ou expirado.' });
+    }
+
+    const newHash = await bcrypt.hash(novaSenha, 10);
+
+    await db.query(`
+      UPDATE usuarios
+      SET senha_hash = ?, reset_token = NULL, reset_token_expira = NULL
+      WHERE id = ?
+    `, [newHash, user.id]);
+
+    res.json({ mensagem: 'Senha redefinida com sucesso!' });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ mensagem: 'Erro interno.' });
   }
 });
 

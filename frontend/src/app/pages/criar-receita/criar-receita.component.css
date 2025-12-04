@@ -191,3 +191,36 @@ textarea.form-control {
   font-size: 0.8rem;
   margin-top: 5px;
 }
+.text-counter {
+  display: block;
+  text-align: right;
+  font-size: 0.75rem;
+  color: #a0aec0;
+  margin-top: 4px;
+}
+.error-field {
+  border: 2px solid #ff5a5a !important;
+  background-color: #3a1f1f !important;
+}
+
+.image-error {
+  border: 2px solid #ff5a5a !important;
+  background-color: #3a1f1f !important;
+}
+.btn-voltar {
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 15px;
+  opacity: 0.85;
+  transition: 0.2s;
+}
+.btn-voltar:hover {
+  opacity: 1;
+  transform: translateX(-3px);
+}

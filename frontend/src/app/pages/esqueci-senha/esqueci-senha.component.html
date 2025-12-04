@@ -1,33 +1,85 @@
 <div class="container">
-  <h1 class="title">Esqueceu a Senha?</h1>
+
+  <h1 class="title">Recuperar Senha</h1>
+
   <p class="tagline">
-    Digite seu email abaixo e enviaremos um link para você criar uma nova senha.
+    {{ etapa === 1 ? 'Digite seu email para receber um código.' :
+       etapa === 2 ? 'Digite o código enviado ao seu email.' :
+       'Digite sua nova senha.' }}
   </p>
 
-  <form class="auth-form" (ngSubmit)="onSubmit(emailInput)" #forgotPasswordForm="ngForm">
-    <div class="form-group">
-      <input type="email"
-             class="form-control"
-             placeholder="Digite seu email"
-             name="email"
-             [(ngModel)]="email"
-             required
-             email
-             #emailInput="ngModel">
-      </div>
+  <!-- =============================== -->
+  <!-- ETAPA 1 — Email -->
+  <!-- =============================== -->
+  <form *ngIf="etapa === 1" (ngSubmit)="onEnviarEmail(emailInput)" #form1="ngForm" class="auth-form">
 
-    <div *ngIf="message" class="response-message" [ngClass]="isError ? 'error-message' : 'success-message'">
-      {{ message }}
-    </div>
-
-    <div *ngIf="showRegisterLink">
-      <a routerLink="/cadastro" class="back-link">Não tem uma conta? Cadastre-se aqui.</a>
-    </div>
+    <input type="email"
+           class="form-control"
+           placeholder="Digite seu email"
+           name="email"
+           [(ngModel)]="email"
+           required
+           email
+           #emailInput="ngModel">
 
     <button type="submit" class="btn-submit" [disabled]="loading">
-      {{ loading ? 'Enviando...' : 'Enviar Link' }}
+      {{ loading ? 'Enviando...' : 'Enviar código' }}
     </button>
+
   </form>
 
-  <a routerLink="/login" class="back-link">Voltar para o Login</a>
+  <!-- =============================== -->
+  <!-- ETAPA 2 — Código -->
+  <!-- =============================== -->
+  <form *ngIf="etapa === 2" (ngSubmit)="onVerificarCodigo()" class="auth-form">
+
+    <input type="text"
+           class="form-control"
+           placeholder="Código de 6 dígitos"
+           maxlength="6"
+           [(ngModel)]="codigo"
+           name="codigo"
+           required>
+
+    <button type="submit" class="btn-submit" [disabled]="loading">
+      {{ loading ? 'Verificando...' : 'Validar código' }}
+    </button>
+
+    <p class="back-link" (click)="etapa = 1" style="cursor:pointer;">Voltar</p>
+  </form>
+
+  <!-- =============================== -->
+  <!-- ETAPA 3 — Nova Senha -->
+  <!-- =============================== -->
+  <form *ngIf="etapa === 3" (ngSubmit)="onRedefinirSenha()" class="auth-form">
+
+    <input type="password"
+           class="form-control"
+           placeholder="Nova senha"
+           [(ngModel)]="novaSenha"
+           name="novaSenha"
+           required>
+
+    <button type="submit" class="btn-submit" [disabled]="loading">
+      {{ loading ? 'Salvando...' : 'Redefinir Senha' }}
+    </button>
+
+    <p class="back-link" (click)="etapa = 2" style="cursor:pointer;">Voltar</p>
+  </form>
+
+  <!-- =============================== -->
+  <!-- MENSAGEM -->
+  <!-- =============================== -->
+  <div *ngIf="message"
+       class="response-message"
+       [ngClass]="isError ? 'error-message' : 'success-message'">
+    {{ message }}
+  </div>
+
+  <a routerLink="/login" class="back-link" *ngIf="etapa === 1">Voltar para o Login</a>
+
+  <div *ngIf="showRegisterLink">
+    <a routerLink="/cadastro" class="back-link">Não tem uma conta? Cadastre-se aqui.</a>
+  </div>
+
 </div>

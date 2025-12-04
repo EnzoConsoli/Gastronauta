@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { FormsModule, NgModel } from '@angular/forms'; // <-- Importe NgModel
+import { FormsModule, NgModel } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
 
@@ -12,55 +12,120 @@ import { AuthService } from '../../services/auth.service';
   styleUrls: ['./esqueci-senha.component.css']
 })
 export class EsqueciSenhaComponent {
-  email: string = '';
-  message: string = '';
-  loading: boolean = false;
-  isError: boolean = false;
-  showRegisterLink: boolean = false;
 
-  constructor(private authService: AuthService) { }
+  // ETAPA ATUAL
+  etapa = 1;
 
-  // A função agora recebe o estado do campo de email
-  onSubmit(emailField: NgModel): void {
-    // Reseta as mensagens a cada nova tentativa
-    this.loading = true;
-    this.message = '';
-    this.isError = false;
-    this.showRegisterLink = false;
+  // Campos
+  email = '';
+  codigo = '';
+  novaSenha = '';
 
-    // 1. Validação de CAMPO VAZIO (quando clica no botão)
+  // Estado
+  message = '';
+  loading = false;
+  isError = false;
+  showRegisterLink = false;
+
+  constructor(private authService: AuthService) {}
+
+  // ===========================
+  // ETAPA 1 — Enviar email
+  // ===========================
+  onEnviarEmail(emailField: NgModel) {
+    this.resetMensagens();
+    
     if (!this.email) {
-      this.message = 'Por favor, preencha o campo de email.';
-      this.isError = true;
-      this.loading = false;
+      this.setErro('Por favor, preencha o email.');
       return;
     }
-
-    // 2. Validação de FORMATO DE EMAIL INVÁLIDO (quando clica no botão)
     if (emailField.errors?.['email']) {
-      this.message = 'Por favor, insira um formato de email válido.';
-      this.isError = true;
-      this.loading = false;
+      this.setErro('Email inválido.');
       return;
     }
 
-    // 3. Se tudo estiver certo, chama a API
+    this.loading = true;
+
     this.authService.forgotPassword(this.email).subscribe({
       next: (res) => {
-        this.message = res.mensagem;
-        this.isError = false;
+        this.message = 'Código enviado! Verifique seu email.';
+        this.etapa = 2; // vai para ETAPA DO CÓDIGO
         this.loading = false;
       },
       error: (err) => {
-        this.message = err.error.mensagem;
-        this.isError = true;
-        
-        if (err.status === 404) {
-          this.showRegisterLink = true;
-        }
-
-        this.loading = false;
+        this.setErro(err.error.mensagem || 'Erro ao enviar código.');
+        if (err.status === 404) this.showRegisterLink = true;
       }
     });
+  }
+
+  // ===========================
+  // ETAPA 2 — Verificar código
+  // ===========================
+  onVerificarCodigo() {
+    this.resetMensagens();
+
+    if (!this.codigo || this.codigo.length !== 6) {
+      this.setErro('O código deve ter 6 dígitos.');
+      return;
+    }
+
+    this.loading = true;
+
+    this.authService.verifyResetCode(this.email, this.codigo).subscribe({
+      next: () => {
+        this.message = 'Código verificado!';
+        this.etapa = 3; // vai para ETAPA DA NOVA SENHA
+        this.loading = false;
+      },
+      error: (err) => {
+        this.setErro(err.error.mensagem || 'Código inválido.');
+      }
+    });
+  }
+
+  // ===========================
+  // ETAPA 3 — Definir nova senha
+  // ===========================
+  onRedefinirSenha() {
+    this.resetMensagens();
+
+    if (!this.novaSenha || this.novaSenha.length < 6) {
+      this.setErro('A senha deve ter pelo menos 6 caracteres.');
+      return;
+    }
+
+    this.loading = true;
+
+    this.authService.resetPassword(this.email, this.codigo, this.novaSenha).subscribe({
+      next: () => {
+        this.message = 'Senha redefinida com sucesso!';
+        this.isError = false;
+        this.loading = false;
+
+        setTimeout(() => {
+          window.location.href = '/login';
+        }, 2000);
+      },
+      error: (err) => {
+        this.setErro(err.error.mensagem || 'Erro ao redefinir senha.');
+      }
+    });
+  }
+
+  // ===========================
+  // Funções auxiliares
+  // ===========================
+  setErro(msg: string) {
+    this.message = msg;
+    this.isError = true;
+    this.loading = false;
+  }
+
+  resetMensagens() {
+    this.message = '';
+    this.isError = false;
+    this.loading = false;
+    this.showRegisterLink = false;
   }
 }

@@ -1,93 +1,168 @@
+<!-- ✅ Botão Voltar -->
+<button class="btn-voltar" (click)="voltar()">
+  <i class="fa-solid fa-arrow-left"></i> Voltar
+</button>
+
 <div class="form-container">
+
   <h1>Envie sua receita</h1>
 
   <form (ngSubmit)="onSubmit(recipeForm)" #recipeForm="ngForm">
     
     <h2>Sua Receita</h2>
+
     <div class="form-group">
       <label for="prato">Título da Receita *</label>
-      <input type="text" id="prato" name="prato" class="form-control" [(ngModel)]="recipeData.prato" required #pratoField="ngModel">
-      <div *ngIf="pratoField.invalid && (pratoField.dirty || pratoField.touched)" class="error-message">
+      <input
+        type="text"
+        id="prato"
+        name="prato"
+        class="form-control"
+        [(ngModel)]="recipeData.prato"
+        required
+        maxlength="40"
+        #pratoField="ngModel"
+      />
+      <small class="text-counter">{{ recipeData.prato?.length || 0 }}/40</small>
+
+      <div
+        *ngIf="(pratoField.invalid && (pratoField.dirty || pratoField.touched)) || (triedSubmit && !recipeData.prato)"
+        class="error-message"
+      >
         Título da receita é obrigatório.
       </div>
     </div>
-    
+
     <div class="form-group">
       <label for="descricao">Apresentação / Descrição</label>
-      <textarea id="descricao" name="descricao" class="form-control" [(ngModel)]="recipeData.descricao" placeholder="Uma breve descrição sobre sua receita."></textarea>
+      <textarea
+        id="descricao"
+        name="descricao"
+        class="form-control"
+        [(ngModel)]="recipeData.descricao"
+        maxlength="200"
+      ></textarea>
+      <small class="text-counter">{{ recipeData.descricao?.length || 0 }}/200</small>
     </div>
 
     <div class="form-group">
-      <label>Foto Principal da Receita</label>
+      <label>Foto Principal da Receita *</label>
+
       <div class="image-upload-area" (click)="fileInput.click()">
         <i class="fa-solid fa-cloud-arrow-up"></i>
         <p *ngIf="!imagePreview">Clique para enviar uma imagem</p>
+
         <div *ngIf="imagePreview" class="image-preview">
-          <img [src]="imagePreview" alt="Pré-visualização da imagem">
+          <img [src]="imagePreview" alt="Pré-visualização da imagem" />
         </div>
+
         <p *ngIf="!imagePreview">Formatos permitidos: JPG, PNG, WEBP. Tamanho máximo: 5MB.</p>
       </div>
-      <input type="file" #fileInput (change)="onFileSelected($event)" class="hidden-file-input" accept="image/jpeg, image/png, image/webp">
+
+      <input
+        type="file"
+        #fileInput
+        (change)="onFileSelected($event)"
+        class="hidden-file-input"
+        accept="image/jpeg, image/png, image/webp"
+      />
+
       <div *ngIf="uploadError" class="error-message">{{ uploadError }}</div>
+      <div *ngIf="triedSubmit && !selectedFile" class="error-message">
+        A foto da receita é obrigatória.
+      </div>
     </div>
 
     <h2>Informações-Chave</h2>
+
     <div class="form-row">
       <div class="form-group">
         <label>Dificuldade</label>
         <div class="rating-options">
-          <input type="radio" id="dificuldade-facil" name="dificuldade" value="Fácil" [(ngModel)]="recipeData.dificuldade">
+          <input type="radio" id="dificuldade-facil" name="dificuldade" value="Fácil" [(ngModel)]="recipeData.dificuldade" />
           <label for="dificuldade-facil">Fácil</label>
-          <input type="radio" id="dificuldade-medio" name="dificuldade" value="Médio" [(ngModel)]="recipeData.dificuldade">
+
+          <input type="radio" id="dificuldade-medio" name="dificuldade" value="Médio" [(ngModel)]="recipeData.dificuldade" />
           <label for="dificuldade-medio">Médio</label>
-          <input type="radio" id="dificuldade-dificil" name="dificuldade" value="Difícil" [(ngModel)]="recipeData.dificuldade">
+
+          <input type="radio" id="dificuldade-dificil" name="dificuldade" value="Difícil" [(ngModel)]="recipeData.dificuldade" />
           <label for="dificuldade-dificil">Difícil</label>
         </div>
       </div>
+
       <div class="form-group">
         <label>Custo</label>
-         <div class="rating-options">
-          <input type="radio" id="custo-barato" name="custo" value="Barato" [(ngModel)]="recipeData.custo">
+        <div class="rating-options">
+          <input type="radio" id="custo-barato" name="custo" value="Barato" [(ngModel)]="recipeData.custo" />
           <label for="custo-barato">Barato</label>
-          <input type="radio" id="custo-medio" name="custo" value="Médio" [(ngModel)]="recipeData.custo">
+          <input type="radio" id="custo-medio" name="custo" value="Médio" [(ngModel)]="recipeData.custo" />
           <label for="custo-medio">Médio</label>
-          <input type="radio" id="custo-caro" name="custo" value="Caro" [(ngModel)]="recipeData.custo">
+          <input type="radio" id="custo-caro" name="custo" value="Caro" [(ngModel)]="recipeData.custo" />
           <label for="custo-caro">Caro</label>
         </div>
       </div>
     </div>
+
     <div class="form-row">
-       <div class="form-group">
+      <div class="form-group">
         <label for="tempo_preparo">Tempo Total</label>
-        <input type="text" id="tempo_preparo" name="tempo_preparo" class="form-control" [(ngModel)]="recipeData.tempo_preparo" placeholder="Ex: 1h 30min">
+        <input type="text" id="tempo_preparo" name="tempo_preparo" class="form-control" [(ngModel)]="recipeData.tempo_preparo" placeholder="Ex: 1h 30min" />
       </div>
+
       <div class="form-group">
         <label for="cozimento">Tempo de Cozimento</label>
-        <input type="text" id="cozimento" name="cozimento" class="form-control" [(ngModel)]="recipeData.cozimento" placeholder="Ex: 40min">
+        <input type="text" id="cozimento" name="cozimento" class="form-control" [(ngModel)]="recipeData.cozimento" placeholder="Ex: 40min" />
       </div>
+
       <div class="form-group">
         <label for="rendimento">Rendimento</label>
-        <input type="text" id="rendimento" name="rendimento" class="form-control" [(ngModel)]="recipeData.rendimento" placeholder="Ex: 4 porções">
+        <input type="text" id="rendimento" name="rendimento" class="form-control" [(ngModel)]="recipeData.rendimento" placeholder="Ex: 4 porções" />
       </div>
     </div>
 
     <h2>Ingredientes *</h2>
-     <div class="form-group">
-      <textarea id="ingredientes" name="ingredientes" class="form-control" [(ngModel)]="recipeData.ingredientes" required #ingredientesField="ngModel" placeholder="Um ingrediente por linha..."></textarea>
-      <div *ngIf="ingredientesField.invalid && (ingredientesField.dirty || ingredientesField.touched)" class="error-message">
+    <div class="form-group">
+      <textarea
+        id="ingredientes"
+        name="ingredientes"
+        class="form-control"
+        [(ngModel)]="recipeData.ingredientes"
+        required
+        maxlength="1500"
+        #ingredientesField="ngModel"
+        placeholder="Um ingrediente por linha..."
+      ></textarea>
+
+      <small class="text-counter">{{ recipeData.ingredientes?.length || 0 }}/1500</small>
+
+      <div *ngIf="(ingredientesField.invalid && (ingredientesField.dirty || ingredientesField.touched)) || (triedSubmit && !recipeData.ingredientes)" class="error-message">
         Lista de ingredientes é obrigatória.
       </div>
     </div>
 
     <h2>Modo de Preparo *</h2>
-     <div class="form-group">
-       <textarea id="preparacao" name="preparacao" class="form-control" [(ngModel)]="recipeData.preparacao" required #preparacaoField="ngModel" placeholder="Passo 1...\nPasso 2...\nPasso 3..."></textarea>
-      <div *ngIf="preparacaoField.invalid && (preparacaoField.dirty || preparacaoField.touched)" class="error-message">
+    <div class="form-group">
+      <textarea
+        id="preparacao"
+        name="preparacao"
+        class="form-control"
+        [(ngModel)]="recipeData.preparacao"
+        required
+        maxlength="3000"
+        #preparacaoField="ngModel"
+        placeholder="Passo 1...
+Passo 2...
+Passo 3..."
+      ></textarea>
+
+      <small class="text-counter">{{ recipeData.preparacao?.length || 0 }}/3000</small>
+
+      <div *ngIf="(preparacaoField.invalid && (preparacaoField.dirty || preparacaoField.touched)) || (triedSubmit && !recipeData.preparacao)" class="error-message">
         Modo de preparo é obrigatório.
       </div>
     </div>
 
-    <button type="submit" class="btn-submit" [disabled]="!recipeForm.form.valid || isLoading">
+    <button type="submit" class="btn-submit" [disabled]="isLoading">
       {{ isLoading ? 'Enviando...' : 'Enviar minha receita' }}
     </button>
 
@@ -95,3 +170,4 @@
 </div>
 
 <app-popup #recipePopup (confirmAction)="onPopupConfirm()"></app-popup>
+

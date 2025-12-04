@@ -1,3 +1,7 @@
+<div class="back-button" (click)="goBack()">
+  <i class="fa-solid fa-arrow-left"></i> Voltar
+</div>
+
 <div class="detail-container">
 
   <div *ngIf="isLoading" class="loading">Carregando detalhes...</div>
@@ -5,7 +9,7 @@
 
   <div *ngIf="recipe">
     
-    <img [src]="fullImageUrl || 'assets/placeholder.png'" 
+    <img [src]="fullImageUrl || '/assets/images/placeholder-recipe.png'" 
          alt="Foto de {{ recipe.prato }}" 
          class="recipe-image"
          (error)="onImageError($event)">
@@ -14,15 +18,22 @@
       
       <div class="title-row">
         <h1 class="recipe-title">{{ recipe.prato }}</h1>
-        <i class="fa-regular fa-heart like-icon"></i> 
+        <i class="like-icon"
+           [ngClass]="isLiked ? 'fa-solid fa-heart liked' : 'fa-regular fa-heart'"
+           (click)="toggleLike()">
+        </i> 
       </div>
       
       <section class="rating-section">
         <div class="rating-display">
           <div class="rating-stars">
-            <ng-container *ngFor="let i of [].constructor(fullStars)"><i class="fa-solid fa-star"></i></ng-container>
+            <ng-container *ngFor="let i of [].constructor(fullStars)">
+              <i class="fa-solid fa-star"></i>
+            </ng-container>
             <i *ngIf="hasHalfStar" class="fa-solid fa-star-half-stroke"></i>
-            <ng-container *ngFor="let i of [].constructor(emptyStars)"><i class="fa-regular fa-star empty-star"></i></ng-container>
+            <ng-container *ngFor="let i of [].constructor(emptyStars)">
+              <i class="fa-regular fa-star empty-star"></i>
+            </ng-container>
           </div>
           <div class="rating-info">
             <span class="rating-score">{{ ratingValue | number:'1.1-1' }} / 5</span>
@@ -43,10 +54,12 @@
       </div>
 
       <div class="author-section">
-        <div class="author-avatar"></div> 
+        <div class="avatar-container">
+          <img [src]="authorAvatarUrl" (error)="onImageError($event)" alt="Foto do Autor" class="profile-avatar">
+        </div>
         <div class="author-details">
-           <div class="author-label">Postado por:</div>
-           <div class="author-username">@{{ recipe.nome_usuario }}</div>
+          <div class="author-label">Postado por:</div>
+          <div class="author-username">@{{ recipe.nome_usuario }}</div>
         </div>
       </div>
 
@@ -72,6 +85,99 @@
   </div> 
 </div> 
 
-<app-popup #deleteConfirmPopup (confirmAction)="confirmarExclusao()"></app-popup>
+<!-- ========================================================= -->
+<!-- 🟣 SEÇÃO DE COMENTÁRIOS -->
+<!-- ========================================================= -->
+
+<div class="comments-section">
+  <h2 class="section-title">Comentários</h2>
+
+  <div *ngFor="let c of comentarios" class="comment-item">
+
+    <img 
+      [src]="c.foto_perfil_url ? backend + c.foto_perfil_url : 'assets/canvo.png'" 
+      class="comment-avatar"
+      alt="Avatar de {{ c.nome_usuario }}"
+    />
+
+    <div class="comment-content">
+      <div class="comment-header">
+        <span class="comment-user">@{{ c.nome_usuario }}</span>
+
+        <div class="comment-stars">
+          <ng-container *ngFor="let s of createStarsArray(c.nota)">
+            <i class="fa-solid fa-star"></i>
+          </ng-container>
+        </div>
+
+        <span class="comment-date">{{ formatarData(c.data_avaliacao) }}</span>
+      </div>
+
+      <div class="comment-text">
+        {{ c.comentario }}
+      </div>
+
+      <div class="comment-actions">
+
+        <button class="comment-action-btn" (click)="toggleLikeComment(c)">
+          <i class="fa-thumbs-up" 
+             [class.fa-solid]="c.liked" 
+             [class.fa-regular]="!c.liked"></i>
+          <span>{{ c.likes || 0 }}</span>
+        </button>
+
+        <button class="comment-action-btn" (click)="toggleDislikeComment(c)">
+          <i class="fa-thumbs-down" 
+             [class.fa-solid]="c.disliked" 
+             [class.fa-regular]="!c.disliked"></i>
+          <span>{{ c.dislikes || 0 }}</span>
+        </button>
+
+        <button class="comment-action-btn" (click)="toggleReplyBox(c)">
+          <i class="fa-regular fa-comment"></i>
+          Responder
+        </button>
+
+        <!-- BOTÃO DE EXCLUIR SÓ DO DONO -->
+        <button 
+          *ngIf="c.usuario_id === currentUserId"
+          class="comment-action-btn delete-comment"
+          (click)="deleteComment(c)"
+        >
+          <i class="fa-solid fa-trash"></i> Excluir
+        </button>
+
+      </div>
+
+      <div class="comment-reply-box" *ngIf="c.showReplyBox">
+        <textarea
+          [(ngModel)]="c.replyText"
+          rows="2"
+          placeholder="Escreva uma resposta..."
+        ></textarea>
+        <button class="btn-reply" (click)="sendReply(c)">Enviar</button>
+      </div>
+
+      <div class="comment-replies" *ngIf="c.replies?.length">
+        <div *ngFor="let r of c.replies" class="comment-reply">
+          <span class="reply-user">Você</span>
+          <span class="reply-text">{{ r }}</span>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <p *ngIf="comentarios.length === 0" class="no-comments">
+    Ninguém comentou ainda. Seja o primeiro!
+  </p>
+</div>
+
+<app-popup
+  #deleteConfirmPopup
+  (confirmAction)="onPopupConfirm()"
+  (cancelAction)="onPopupCancel()">
+</app-popup>
 
 <app-rating-modal #ratingModal (onPublish)="publicarAvaliacao($event)"></app-rating-modal>

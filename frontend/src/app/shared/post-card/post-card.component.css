@@ -1,0 +1,124 @@
+.post-card {
+  width: 500px;
+  background: #0f1526;
+  border: 1px solid #2a3348;
+  border-radius: 10px;
+  margin: 35px auto;
+  padding-bottom: 12px;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Header */
+.post-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+}
+
+.author-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: #ffffff;
+}
+
+.author-username {
+  font-weight: 600;
+}
+
+/* Image */
+.post-image {
+  width: 100%;
+  max-width: 600px;
+  aspect-ratio: 3/2;
+  object-fit: cover;
+  border-radius: 5px;
+  background: #1d273a;
+}
+
+/* Linha nome + like + rating */
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+}
+
+.recipe-name {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+/* SEÇÃO ENGAGEMENT */
+.engagement {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+/* ❤️ LIKE SECTION - AQUI ENTRA O ESPAÇAMENTO */
+.like-section {
+  display: flex;
+  align-items: center;
+  gap: 6px; /* <-- espaçamento entre ícone e número */
+  cursor: pointer;
+}
+
+.fa-heart-icon {
+  font-size: 22px;
+  cursor: pointer;
+  transition: .2s;
+}
+
+.fa-heart-icon:hover {
+  transform: scale(1.15);
+}
+
+.liked {
+  color: #ED4956;
+}
+
+/* ⭐ RATING */
+.rating-row {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 14px;
+}
+
+.star-icon {
+  color: gold;
+  font-size: 16px;
+}
+
+/* Descrição */
+.post-description {
+  padding: 0 14px 14px;
+  font-size: 14px;
+  margin-top: 4px;
+}
+
+.author-username-desc {
+  font-weight: 600;
+  margin-right: 5px;
+}
+.post-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+}
+
+.author-username {
+  font-weight: 600;
+  font-size: 15px;
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.author-username:hover {
+  text-decoration: underline;
+}
+

@@ -1,4 +1,4 @@
-/* Fundo semi-transparente que cobre a tela inteira */
+/* Fundo escuro */
 .popup-overlay {
   position: fixed;
   top: 0;
@@ -13,16 +13,16 @@
   animation: fadeIn 0.3s ease-out;
 }
 
-/* A caixa de diálogo (o popup em si) */
+/* Caixa do popup */
 .popup-content {
-  background-color: #12182B;
-  padding: 25px 30px;
+  background-color: #1a233a;
+  padding: 30px 35px;
   border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   width: 90%;
-  max-width: 400px;
+  max-width: 420px;
   text-align: center;
-  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
   transform: scale(0.95);
   animation: scaleIn 0.3s ease-out forwards;
 }
@@ -38,28 +38,80 @@
 .popup-message {
   font-size: 1rem;
   color: #a0aec0;
-  margin-bottom: 25px;
+  margin-bottom: 30px;
   line-height: 1.6;
 }
 
-.popup-button {
-  padding: 10px 30px;
+/* Botões */
+.popup-actions {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.popup-button,
+.popup-button-confirm,
+.popup-button-cancel {
+  padding: 12px 32px;
   border-radius: 25px;
   border: 2px solid #FFFFFF;
   background-color: #FFFFFF;
   color: #12182B;
   font-size: 1rem;
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease-in-out;
+  transition: 0.2s;
 }
 
-.popup-button:hover {
+.popup-button:hover,
+.popup-button-confirm:hover,
+.popup-button-cancel:hover {
   background-color: transparent;
   color: #FFFFFF;
 }
 
-/* Animações simples de entrada */
+/* Input de senha */
+.password-container {
+  position: relative;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.popup-input {
+  width: 100%;
+  padding: 12px 45px 12px 12px;
+  border-radius: 10px;
+  background: #2a314a;
+  border: 1px solid rgba(255,255,255,0.15);
+  color: white;
+  outline: none;
+  font-size: 1rem;
+}
+
+.toggle-password {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  color: #cfd3e1;
+}
+
+.toggle-password:hover {
+  color: white;
+}
+
+.eye-icon {
+  width: 20px;
+  height: 20px;
+}
+
+/* Animações */
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }

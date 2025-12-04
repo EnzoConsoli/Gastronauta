@@ -1,0 +1,129 @@
+  <div class="layout-container">
+
+    <aside class="sidebar">
+
+      <!-- TÍTULO MAIOR -->
+      <div class="logo" (click)="goHome()">
+        Gastronauta
+      </div>
+
+      <!-- MENU -->
+      <nav class="nav-items">
+
+        <!-- PERFIL (AGORA COM ESPAÇO PRA BAIXO PELO CSS) -->
+        <a routerLink="/dashboard" routerLinkActive="active" class="nav-link profile-link">
+          <img [src]="avatarUrl" class="sidebar-avatar" />
+          <span>Perfil</span>
+        </a>
+        
+        <!-- PÁGINA INICIAL -->
+        <a routerLink="/feed" routerLinkActive="active" class="nav-link">
+          <i class="fa-solid fa-house"></i>
+          <span>Página Inicial</span>
+        </a>
+
+        <!-- PESQUISAR (POSIÇÃO CORRETA) -->
+        <div class="search-button" (click)="openSearch()">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <span>Pesquisar</span>
+        </div>
+
+        <!-- CRIAR RECEITA -->
+        <a routerLink="/criar-receita" routerLinkActive="active" class="nav-link">
+          <i class="fa-solid fa-plus"></i>
+          <span>Criar Receita</span>
+        </a>
+
+        <!-- MAIS -->
+        <div class="nav-link more-btn" (click)="toggleMenu()">
+          <i class="fa-solid fa-ellipsis"></i>
+          <span>Mais</span>
+        </div>
+
+      </nav>
+
+      <!-- MENU ESTILO INSTAGRAM -->
+      <div class="more-menu-card" *ngIf="showMenu">
+        <div class="menu-item" (click)="trocarConta()">
+          <i class="fa-solid fa-repeat"></i> Trocar de conta
+        </div>
+
+        <div class="menu-item delete" (click)="abrirPopupExcluir()">
+          <i class="fa-solid fa-user-xmark"></i> Excluir conta
+        </div>
+
+        <div class="menu-item" (click)="logout()">
+          <i class="fa-solid fa-arrow-right-from-bracket"></i> Sair
+        </div>
+      </div>
+
+      <!-- POPUPS -->
+      <app-popup 
+        #deletePopup 
+        (confirmAction)="acaoPopup($event)" 
+        (cancelAction)="fecharPopup()">
+      </app-popup>
+
+      <app-switch-account-popup
+        #switchPopup
+        (sucessoEsqueciSenha)="popupSucessoEsqueciSenha()"
+        (loginEvent)="loginOutraConta($event)"
+        (closeEvent)="fecharPopup()">
+      </app-switch-account-popup>
+
+    </aside>
+
+    <!-- SOBREPOSIÇÃO PARA FECHAR O PAINEL -->
+    <div 
+      class="overlay" 
+      *ngIf="searchOpened" 
+      (click)="closeSearch()">
+    </div>
+
+    <!-- PAINEL DE PESQUISA ESTILO INSTAGRAM -->
+    <div class="search-panel" *ngIf="searchOpened">
+
+      <div class="panel-header">
+        <h2>Pesquisar</h2>
+        <div class="search-input-box">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input 
+            type="text" 
+            placeholder="Pesquisar receitas"
+            [(ngModel)]="searchQuery"
+            (input)="onSearchChange()"
+          />
+        </div>
+      </div>
+
+      <div class="panel-results">
+
+        <div 
+          class="result-item" 
+          *ngFor="let r of searchResults"
+          (click)="openRecipe(r.id)"
+        >
+          <img 
+            [src]="getThumbUrl(r.url_imagem)"
+            class="result-thumb"
+          />
+
+          <div>
+            <div class="result-title">{{ r.prato }}</div>
+            <div class="result-user">@{{ r.nome_usuario }}</div>
+          </div>
+        </div>
+
+        <div class="empty" *ngIf="searchResults.length === 0 && searchQuery.trim().length > 0">
+          Nenhuma receita encontrada
+        </div>
+
+      </div>
+
+    </div>
+
+    <main class="content">
+      <router-outlet></router-outlet>
+    </main>
+
+  </div>

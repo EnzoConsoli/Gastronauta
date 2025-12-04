@@ -1,0 +1,39 @@
+<div *ngIf="isVisible" class="overlay" (click)="hide()">
+  <div class="modal-body" (click)="$event.stopPropagation()">
+
+    <!-- IMAGEM -->
+    <div class="image-section">
+      <img [src]="recipeImageUrl" alt="Imagem da receita">
+    </div>
+
+    <!-- COLUNA DE COMENTÁRIOS -->
+    <div class="comments-section">
+
+      <!-- Cabeçalho -->
+      <div class="modal-header">
+        <div class="user-info">
+          <img [src]="authorAvatarUrl" class="avatar">
+          <span class="username">@{{ authorName }}</span>
+        </div>
+        <i class="fa-solid fa-xmark close-btn" (click)="hide()"></i>
+      </div>
+
+      <!-- Lista de comentários -->
+      <div class="comments-list" #commentList>
+        <div *ngFor="let c of comments" class="comment-item">
+          <img [src]="c.foto_perfil_url" class="avatar-sm">
+          <p>
+            <span class="bold">@{{ c.nome_usuario }}</span> {{ c.comentario }}
+          </p>
+        </div>
+      </div>
+
+      <!-- Campo para comentar -->
+      <form class="write-box" [formGroup]="commentForm" (ngSubmit)="postComment()">
+        <input formControlName="newComment" placeholder="Adicione um comentário...">
+        <button type="submit" [disabled]="commentForm.invalid">Publicar</button>
+      </form>
+
+    </div>
+  </div>
+</div>

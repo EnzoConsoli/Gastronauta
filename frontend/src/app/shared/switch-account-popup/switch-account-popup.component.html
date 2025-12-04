@@ -1,0 +1,77 @@
+<div *ngIf="isVisible" class="overlay">
+  <div class="popup">
+
+    <button class="close-btn" (click)="hide()">✕</button>
+
+    <!-- TÍTULO -->
+    <h1 class="logo">Gastronauta</h1>
+
+    <!-- ========================= -->
+    <!--   MODO LOGIN NORMAL       -->
+    <!-- ========================= -->
+    <ng-container *ngIf="modo === 'login'">
+      
+      <input 
+        type="text"
+        placeholder="Email"
+        [(ngModel)]="email"
+        class="input"
+      />
+
+      <!-- CAMPO DE SENHA COM ÍCONE -->
+      <div class="senha-wrapper">
+
+<input 
+  [type]="mostrarSenha ? 'text' : 'password'"
+  placeholder="Senha"
+  [(ngModel)]="senha"
+  class="input senha-input"
+  autocomplete="off"
+/>
+
+
+  <i 
+    class="fa-solid"
+    [ngClass]="mostrarSenha ? 'fa-eye-slash' : 'fa-eye'"
+    (click)="toggleSenha()"
+  ></i>
+
+</div>
+
+
+
+      <p *ngIf="erroMensagem" class="erro-msg">{{ erroMensagem }}</p>
+
+      <button class="login-btn" (click)="login()">Entrar</button>
+
+      <a class="forgot" (click)="abrirEsqueciSenha()">Esqueceu a senha?</a>
+
+    </ng-container>
+
+
+    <!-- ========================= -->
+    <!--   MODO ESQUECI SENHA     -->
+    <!-- ========================= -->
+    <ng-container *ngIf="modo === 'esqueci'">
+
+      <p class="info">
+        Digite seu email e enviaremos um link para redefinir sua senha.
+      </p>
+
+      <input 
+        type="text"
+        placeholder="Seu email"
+        [(ngModel)]="emailRecuperacao"
+        class="input"
+      />
+
+      <p *ngIf="erroMensagem" class="erro-msg">{{ erroMensagem }}</p>
+
+      <button class="login-btn" (click)="enviarRecuperacao()">Enviar link</button>
+
+      <a class="forgot" (click)="modo = 'login'">Voltar</a>
+
+    </ng-container>
+
+  </div>
+</div>

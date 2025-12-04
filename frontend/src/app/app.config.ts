@@ -1,18 +1,21 @@
 // src/app/app.config.ts
 
 import { ApplicationConfig, importProvidersFrom } from '@angular/core';
-import { provideRouter } from '@angular/router';
-// 👇 Importe 'withInterceptors' AQUI 👇
+import { provideRouter, withRouterConfig } from '@angular/router';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+
 import { routes } from './app.routes';
-// 👇 Importe seu interceptor AQUI 👇
-import { jwtInterceptor } from './auth/jwt-interceptor'; 
+import { jwtInterceptor } from './auth/jwt-interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideRouter(routes),
-    // 👇 ATUALIZE ESTA LINHA para incluir 'withInterceptors' 👇
+    // 🔥 AQUI ESTÁ A CORREÇÃO DEFINITIVA
+    provideRouter(
+      routes,
+      withRouterConfig({ onSameUrlNavigation: 'reload' })
+    ),
+
     provideHttpClient(withInterceptors([jwtInterceptor])),
     importProvidersFrom(FormsModule)
   ]

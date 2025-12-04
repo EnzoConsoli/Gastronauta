@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { CommonModule } from '@angular/common';
-import { FormsModule, NgForm } from '@angular/forms'; // <-- Importe NgForm
+import { FormsModule, NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-redefinir-senha',
@@ -11,10 +11,13 @@ import { FormsModule, NgForm } from '@angular/forms'; // <-- Importe NgForm
   templateUrl: './redefinir-senha.component.html',
   styleUrls: ['./redefinir-senha.component.css']
 })
-export class RedefinirSenhaComponent implements OnInit {
-  token: string | null = null;
+export class RedefinirSenhaComponent {
+
+  email = '';
+  codigo = '';
   novaSenha = '';
   confirmarSenha = '';
+
   message = '';
   isError = false;
   loading = false;
@@ -30,19 +33,15 @@ export class RedefinirSenhaComponent implements OnInit {
   passwordStrengthColor = 'transparent';
 
   constructor(
-    private route: ActivatedRoute,
     private authService: AuthService,
     private router: Router
-  ) { }
-
-  ngOnInit(): void {
-    this.token = this.route.snapshot.queryParamMap.get('token');
-  }
+  ) {}
 
   onPasswordChange(password: string): void {
     const uppercaseRegex = /[A-Z]/;
     const numberRegex = /[0-9]/;
     const specialCharRegex = /[!@#$%^&*(),.?":{}|<>]/;
+
     let strength = 0;
 
     this.passwordValidators.minLength = password.length >= 8;
@@ -66,7 +65,6 @@ export class RedefinirSenhaComponent implements OnInit {
     }
   }
 
-  // 👇 LÓGICA ATUALIZADA AQUI 👇
   onSubmit(form: NgForm): void {
     this.loading = true;
     this.isError = false;
@@ -74,7 +72,6 @@ export class RedefinirSenhaComponent implements OnInit {
 
     form.control.markAllAsTouched();
 
-    // 1. VERIFICAÇÃO DE CAMPOS VAZIOS
     if (form.invalid) {
       this.message = 'Por favor, preencha todos os campos obrigatórios.';
       this.isError = true;
@@ -82,15 +79,13 @@ export class RedefinirSenhaComponent implements OnInit {
       return;
     }
 
-    // 2. VERIFICAÇÃO DE FORÇA DA SENHA (seu código já tinha)
     if (this.passwordStrengthPercent < 100) {
-      this.message = 'Sua nova senha não atende a todos os requisitos.';
+      this.message = 'Sua nova senha não atende aos requisitos.';
       this.isError = true;
       this.loading = false;
       return;
     }
 
-    // 3. VERIFICAÇÃO DE SENHAS IGUAIS (seu código já tinha)
     if (this.novaSenha !== this.confirmarSenha) {
       this.message = 'As senhas não coincidem.';
       this.isError = true;
@@ -98,20 +93,17 @@ export class RedefinirSenhaComponent implements OnInit {
       return;
     }
 
-    if (!this.token) {
-      this.message = 'Token de redefinição inválido ou não encontrado.';
-      this.isError = true;
-      this.loading = false;
-      return;
-    }
-
-    const data = { token: this.token, novaSenha: this.novaSenha };
-    this.authService.resetPassword(data).subscribe({
+    this.authService.resetPassword(
+      this.email,
+      this.codigo,
+      this.novaSenha
+    ).subscribe({
       next: (res) => {
         this.message = res.mensagem;
         this.isError = false;
         this.loading = false;
-        setTimeout(() => this.router.navigate(['/login']), 3000);
+
+        setTimeout(() => this.router.navigate(['/login']), 2500);
       },
       error: (err) => {
         this.message = err.error.mensagem;

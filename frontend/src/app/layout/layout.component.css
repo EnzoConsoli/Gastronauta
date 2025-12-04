@@ -1,0 +1,236 @@
+/* container geral */
+.layout-container {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+  background: #12182b;
+  color: white;
+}
+
+/* sidebar original */
+.sidebar {
+  width: 260px;
+  background: #12182b;
+  border-right: 1px solid #1f2940;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+}
+
+/* 🔥 TITULO MAIOR */
+.logo {
+  font-size: 30px;
+  font-weight: 700;
+  margin-bottom: 28px;
+}
+
+/* botão estilo Instagram */
+.search-button {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  color: white;
+  font-size: 17px;
+  margin: 0 !important;
+  transition: background .2s;
+}
+
+.search-button:hover {
+  background: #1b2338;
+}
+
+/* overlay escuro */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 260px;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.45);
+  z-index: 50;
+}
+
+/* painel IG */
+.search-panel {
+  position: fixed;
+  top: 0;
+  left: 260px;
+  width: 360px;
+  height: 100%;
+  background: #ffffff;
+  color: #000;
+  border-right: 1px solid #dcdcdc;
+  z-index: 100;
+  animation: slideIn .15s ease-out;
+  display: flex;
+  flex-direction: column;
+}
+
+@keyframes slideIn {
+  from { transform: translateX(-40px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+.panel-header {
+  padding: 20px;
+  border-bottom: 1px solid #ddd;
+}
+
+.panel-header h2 {
+  font-size: 22px;
+  margin-bottom: 12px;
+}
+
+.search-input-box {
+  display: flex;
+  align-items: center;
+  background: #f0f2f5;
+  border-radius: 8px;
+  padding: 8px 12px;
+  gap: 10px;
+}
+
+.search-input-box input {
+  width: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+}
+
+.panel-results {
+  padding: 10px 0;
+  overflow-y: auto;
+}
+
+/* resultados */
+.result-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 18px;
+  cursor: pointer;
+  transition: background .15s;
+}
+
+.result-item:hover {
+  background: #f4f4f4;
+}
+
+.result-thumb {
+  width: 42px;
+  height: 42px;
+  border-radius: 6px;
+  object-fit: cover;
+}
+
+.result-title {
+  font-weight: 600;
+}
+
+.result-user {
+  font-size: 13px;
+  color: #777;
+}
+
+.empty {
+  padding: 20px;
+  color: #555;
+}
+
+/* MENU */
+.nav-items {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* 🔥 PERFIL MAIS PRA BAIXO */
+.profile-link {
+  margin-top: 10px;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  text-decoration: none;
+  color: white;
+  font-size: 17px;
+  transition: background .2s;
+}
+
+.nav-link:hover {
+  background: #1b2338;
+}
+
+.nav-link.active {
+  background: #1f2940;
+}
+
+/* FOTO DO PERFIL */
+.sidebar-avatar {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ffffff22;
+}
+
+/* ===== ÁREA DE CONTEÚDO ===== */
+.content {
+  margin-left: 260px;
+  padding: 20px 30px;
+  width: calc(100% - 260px);
+}
+
+/* ---------------------------- */
+/* MENU ESTILO INSTAGRAM       */
+/* ---------------------------- */
+.more-menu-card {
+  position: absolute;
+  bottom: 220px;
+  left: 20px;
+
+  width: 220px;
+  background: #0e1525;
+  border: 1px solid #1f2940;
+  border-radius: 14px;
+  padding: 10px 0;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.45);
+  animation: fadeIn 0.15s ease-out;
+  z-index: 999;
+}
+
+.menu-item {
+  padding: 12px 18px;
+  font-size: 15px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #d9e0f2;
+  transition: background 0.2s;
+}
+
+.menu-item:hover {
+  background: #1b2338;
+}
+
+.menu-item.delete {
+  color: #ff6b6b;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}

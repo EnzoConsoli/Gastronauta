@@ -1,0 +1,43 @@
+<div class="search-container">
+
+  <div class="search-box">
+    <input 
+      type="text"
+      placeholder="Pesquisar receitas..."
+      [(ngModel)]="query"
+      (input)="onSearch()"
+    />
+
+    <i class="fa-solid fa-xmark clear-btn" *ngIf="query" (click)="limpar()"></i>
+  </div>
+
+  <!-- LOADING -->
+  <div class="loading" *ngIf="carregando">
+    Procurando receitas...
+  </div>
+
+  <!-- RESULTADOS -->
+  <div class="results" *ngIf="!carregando && resultados.length > 0">
+    <div class="result-item" *ngFor="let r of resultados" (click)="abrirReceita(r.id)">
+      
+      <img 
+        class="thumb"
+        [src]="'http://localhost:3000' + r.url_imagem"
+        alt="Imagem da receita"
+      />
+
+      <div class="info">
+        <strong>{{ r.prato }}</strong>
+        <p>@{{ r.nome_usuario }}</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- NENHUMA RECEITA ENCONTRADA (só aparece DEPOIS da requisição acabar) -->
+  <p class="no-results"
+    *ngIf="!carregando && jaBuscou && resultados.length === 0">
+    Nenhuma receita encontrada.
+  </p>
+
+</div>

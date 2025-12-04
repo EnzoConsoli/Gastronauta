@@ -1,0 +1,53 @@
+<div class="back-button" (click)="goBack()">
+  <i class="fa-solid fa-arrow-left"></i> Voltar
+</div>
+<div class="form-container">
+  <h1>Editar Perfil</h1>
+
+  <form (ngSubmit)="onSubmit()" #profileForm="ngForm">
+
+    <div class="form-group">
+      <label></label>
+      <img [src]="imagePreview" (error)="onImageError($event)" alt="Preview" class="avatar-preview" (click)="fileInput.click()">
+      
+      <!-- ======================================= -->
+      <!-- === DIV DE ALINHAMENTO ADICIONADA === -->
+      <!-- ======================================= -->
+      <div class="avatar-actions-container">
+        <label for="fotoPerfil" class="file-input-label">Alterar foto</label>
+
+        <!-- (Seu botão que já existe, agora dentro do div) -->
+        <button type="button" class="btn-remove-photo" (click)="onRemovePicture()">
+          Remover foto
+        </button>
+      </div>
+      <!-- ======================================= -->
+
+      <input type="file" #fileInput (change)="onFileSelected($event)" class="hidden-file-input" id="fotoPerfil" accept="image/jpeg, image/png, image/webp">
+      <div *ngIf="uploadError" class="error-message">{{ uploadError }}</div>
+    </div>
+
+    <div class="form-group">
+      <label for="nome_usuario">Nome de Usuário (@)</label>
+      <input type="text" id="nome_usuario" name="nome_usuario" class="form-control" [(ngModel)]="profileData.nome_usuario" disabled>
+      <small>O nome de usuário não pode ser alterado.</small>
+    </div>
+
+    <div class="form-group">
+      <label for="nome_completo">Nome Completo</label>
+      <input type="text" id="nome_completo" name="nome_completo" class="form-control" [(ngModel)]="profileData.nome_completo">
+    </div>
+
+    <div class="form-group">
+      <label for="bio">Bio / Descrição</label>
+      <textarea id="bio" name="bio" class="form-control" [(ngModel)]="profileData.bio" placeholder="Fale um pouco sobre você..."></textarea>
+    </div>
+
+    <button type="submit" class="btn-submit" [disabled]="isLoading">
+      {{ isLoading ? 'Salvando...' : 'Salvar Alterações' }}
+    </button>
+  </form>
+</div>
+
+<app-popup #profilePopup (confirmAction)="onPopupConfirm()"></app-popup>
+
